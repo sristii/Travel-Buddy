@@ -21,6 +21,11 @@
             text-align: center;
             width: 100%;
         }
+        .input-err {
+            display: block;
+            font-size: 18px;
+            color: black;
+        }
         #cats-container {
             display: block;
             width: 100%;
@@ -101,7 +106,7 @@
         }
 
         .tag-container img {
-            height: 50px;
+            width: 100px;
         }
 
         .tag-container .tag-text {
@@ -110,11 +115,85 @@
             left: 60%;
             transform: translate(-50%, -50%);
             color: black;
-            font-size: 18px;
+            font-size: 16px;
             text-align: center;
         }
     </style>
     <script>
+        // TODO validate city. If nonexistent, display error
+
+        // for building forms
+        const cateringOptions = {
+            'Vegetarian-friendly': "vegetarian", 
+            'Vegan-friendly': "vegan", 
+            'Halal': "halal", 
+            'Kosher': "kosher"
+        };
+        const commercialOptions = {
+            "Supermarkets" : "commercial.supermarket",
+            "Marketplaces": "commercial.marketplace",
+            "Shopping malls": "commercial.shopping_mall",
+            "Clothing": "commercial.clothing",
+            "Banks/ATM": "service.financial.bank%2Cservice.financial.atm",
+            "Public transportation": "public_transport",
+        };
+        const naturalOptions = {
+            "Forests" : "natural.forest",
+            "Water": "natural.water",
+            "Mountains": "natural.mountain",
+            "Camping Sites": "camping",
+            "Parks": "leisure.park",
+            "Any nature": "natural"
+        };
+        const culturalOptions = {
+            "Famous Tourist Sites": "tourism.sights",
+            "Theatre & Arts": "entertainment.culture",
+            "Museums": "entertainment.museum",
+            "Universities": "building.university%2Cbuilding.college",
+            "Religious Sites": "tourism.sights.place_of_worship",
+            "Historical Sites": "building.historic"
+        };
+        const entertainOptions = {
+            "All sport centers": "sport",
+            "Fitness centers": "sport.fitness",
+            "Zoo": "entertainment.zoo",
+            "Aquarium": "entertainment.aquarium",
+            "Cinema": "entertainment.cinema",
+            "Theme park": "entertainment.theme_park",
+            "Spa": "leisure.spa",
+            "Casino": "adult.casino",
+        };
+
+        // for extracting info from result places
+        const basicFields = [
+            "year_of_construction",
+            "opening_hours",
+            "phone",
+            "website",
+        ];
+
+        // info from general form that will be used in api query string
+        var cityName = "London";
+        var lonLat = { lat: 51.50853, lon: -0.12574 };
+        var distMeters = 3000;
+        var wheelchair = ""; // empty string means false
+        var wifi = ""; // empty string means false
+
+        // form validation
+        function validateDist(dist) {
+            const distNum = parseFloat(dist);
+
+            // if successfully converted into a numeric value, return in meters
+            if (!isNaN(distNum)) {
+                const meters = Math.round(distNum * 1000);
+                return meters;
+            } else {
+                // if cannot be converted into a number, display error message
+                $(".input-err").html("Error: radius must be numeric. Defaulted to 3 km.");
+                return 3000;
+            }
+        }
+
         function getCatTags(containerId) {
             switch (containerId) {
                 case "natural-container":
@@ -128,14 +207,20 @@
                         "diet:halal": "halal", 
                         "diet:kosher": "kosher",
                         "diet:vegetarian": "vegetarian", 
-                        "diet:vegan": "vegan" 
+                        "diet:vegan": "vegan",
+                        "internet_access": "Wi-Fi",
+                        "wheelchair": "wheelchair",
+                        "internet_access": "Wi-Fi"
                     };
                 default:
-                    return {};
+                    return {
+                        "wheelchair": "wheelchair",
+                        "internet_access": "Wi-Fi"
+                    };
             }
         }
 
-        // if the category is a hiearchy, e.g., catering.cafe, get the parent category
+        // if the category is a hierarchy, e.g., catering.cafe, get the parent category
         // otherwise keep the whole category
         function getParentCat(category) {
             var periodIdx = category.indexOf(".");
@@ -144,15 +229,16 @@
             if (periodIdx !== -1) { 
                 parentCat = category.substring(0, periodIdx);
             }
-
             return parentCat;
         }
 
         function makeTag(text) {
             text = text.replace(/_/g, ' ');
+            capitalized = text[0].toUpperCase() + text.slice(1);
+
             const html = `<div class="tag-container">
                             <img src="tag-icon.png" alt="grey tag with text">
-                            <div class="tag-text">${text}</div>
+                            <div class="tag-text">${capitalized}</div>
                             </div>`;
 
             return html;
@@ -160,6 +246,14 @@
 
         function makeLink(classname, url, text) {
             return `<a href="${url}" class="${classname}">${text}</a>`;
+        }
+
+        function makeChkBox(name, id, val) {
+            return `<input type="checkbox" name="${name}" id="${id}" value="${val}" />`;
+        }
+
+        function makeLabel(forId, text) {
+            return `<label for="${forId}">${text}</label>`;
         }
 
         function formatWebsite(url) {
@@ -172,21 +266,29 @@
 
         function formatHours(hoursStr) {
             let formatted = hoursStr.replace(/;/g, '<br />&nbsp;&nbsp;&nbsp;&nbsp;');
-            formatted = formatted.replace(/,/g, ', ');
             formatted = formatted.replace(/, /g, '<br />&nbsp;&nbsp;&nbsp;&nbsp;');
             return "🕒 " + formatted;
         }
 
         function formatAddress(addressStr) {
-            return addressStr;
+            const addressLower = addressStr.toLowerCase();
+            const cityLower = cityName.toLowerCase();
+            const cityIdx = addressLower.indexOf(cityLower);
+
+            if (cityIdx !== -1) {
+                // truncate the address up to the city
+                return "📍 " + addressStr.substring(0, cityIdx + cityLower.length);
+            } else {
+                // if the city is not found, return the full address
+                return "📍 " + addressStr;
+            }
         }
 
-        const basicFields = [
-            "year_of_construction",
-            "opening_hours",
-            "phone",
-            "website",
-        ];
+        function metersToKm(meters) {
+            const km = meters / 1000;
+            const rounded = Math.round(km * 100) / 100;
+            return rounded;
+        }
 
         function formatbasicFields(type, val) {
             switch(type) {
@@ -203,74 +305,6 @@
             }
         }
 
-        async function loadResults(containerId, categories, filters, lon, lat) {
-            if (categories.length == 0) { // TODO remove later
-                console.log("Error: At least one category required");
-                return;
-            }
-
-            const catStr = categories.join("%2C");
-            const conditions = filters.length == 0 ? "" : `&conditions=${ filters.join("%2C") }`;
-            const maxResults = 4;
-            const distMeters = 4000;
-            const url = `https://api.geoapify.com/v2/places?categories=${catStr}${conditions}&filter=circle%3A${lon}%2C${lat}%2C${distMeters}&limit=${maxResults}&apiKey=0b813d154863412cb86acd4b37d93c3b`;
-
-            console.log(url);
-
-            const catTags = getCatTags(containerId);
-            console.log(catTags);
-
-            fetch(url)
-                .then(res => res.text())
-                .then(data => 
-                {
-                    const locations = JSON.parse(data);
-                    locationsArr = locations.features;
-
-                    let dataHTML = "";
-                    for (const place of locationsArr) {
-                        console.log(place);
-                        const info = place.properties;
-                        const moreinfo = info.datasource.raw;
-
-                        // features of this place to display as tags
-                        let matchingTags = [];
-                        for (const key in catTags) {
-                            if (key in moreinfo) {
-                                if (catTags[key] === "") {
-                                    const tagVals = moreinfo[key];
-                                    const tagValsArr = tagVals.split(';');
-                                    matchingTags = matchingTags.concat(tagValsArr);
-                                } else {
-                                    matchingTags.push(catTags[key]);
-                                }
-                            }
-                        }
-                        console.log(matchingTags);
-
-                        const tagsHTML = matchingTags.map(makeTag).join('');
-                        let list = `<ul><li class='tags'>${tagsHTML}</li><li class='place-name'>${info.name}</li><li>📍${formatAddress(info.address_line2)}</li>`;
-
-                        for (const key of basicFields) {
-                            if (moreinfo.hasOwnProperty(key)) {
-                                list += `<li>${formatbasicFields(key, moreinfo[key])}</li>`;
-                            }
-                        }
-                        
-                        list += "</ul>";
-                        dataHTML += "<div class='place-container'><div class='place-info'>" + list + "</div></div>";
-                    }
-
-                    // no results found
-                    if (dataHTML === "") {
-                        dataHTML = "We couldn't find any matching results.";
-                    }
-
-                    $(`#${containerId} .panes`).html(dataHTML); 
-                })
-            .catch (error => console.log(error));
-        }
-
         async function getLonLat(dest) {
             
             // $("input[name='box']:checked").each(function() {
@@ -279,9 +313,6 @@
             //         catArr.push(selectedVal);
             //     }
             // });
-            // console.log(catArr);
-
-            // const categories = catArr.join("%2C");
 
             // TODO convert dest name to lowercase?
 
@@ -316,8 +347,17 @@
     <h1>Build the Trip of a Lifetime</h1>
     <form id="general-form" action="#" method="#">
         <label>City: </label>
-        <input type="text" id="user-text" name="target-val"><br />
+        <input type="text" id="user-text" name="desired-place" placeholder="London"/><br />
+        Limit search to a radius of <input type="text" id="dist-limit" name="maxDist" placeholder="3.5"> kilometers<br />
+
+        <input type="checkbox" name="accessibility" id="chkWheelchair" value="wheelchair"/>
+        <label for="chkWheelchair">Only wheelchair-friendly</label><br />
+
+        <input type="checkbox" name="wifi" id="chkWifi" value="internet_access"/>
+        <label for="chkWifi">Only places with Internet Access</label><br />
+
         <input type="submit" value="Submit">
+        <div class="input-err"></div>
     </form>
     <div id="cats-container">
         <form id="catering-form" action="#" method="#">
@@ -328,11 +368,6 @@
             <label for="chk-cafe">Cafes only</label><br />
             <input type="radio" name="cateringCat" class="food-cat" id="chk-all" value="catering" checked>
             <label for="chk-all">Restaurants, cafes, fast food, bars</label><br /><br />
-    
-            <!-- <input type="checkbox" name="cateringChk" id="chk1" value="vegetarian"><label for="chk1">Vegetarian-friendly</label><br />
-            <input type="checkbox" name="cateringChk" id="chk2" value="vegan"><label for="chk2">Vegan-friendly</label><br />
-            <input type="checkbox" name="cateringChk" id="chk3" value="halal"><label for="chk3">Halal</label><br />
-            <input type="checkbox" name="cateringChk" id="chk4" value="kosher"><label for="chk4">Kosher</label><br />  -->
         </form>
 
         <div class='catResults' id='catering-container'>
@@ -365,7 +400,7 @@
         </div>
         
         <form id="entertain-form" action="#" method="#">
-            <h4>All the Fun</h4>
+            <h4>More Fun</h4>
         </form>
         <div class='catResults' id='entertain-container'>
             <h2>Other Entertainment</h2>
@@ -373,117 +408,158 @@
         </div>
     </div>
     <script>
-        function makeChkBox(name, id, val) {
-            return `<input type="checkbox" name="${name}" id="${id}" value="${val}" />`
-        }
-        function makeLabel(forId, text) {
-            return `<label for="${forId}">${text}</label>`;
-        }
-    
-        $(document).ready(function() {
-            const cateringOptions = {
-                'Vegetarian-friendly': "vegetarian", 
-                'Vegan-friendly': "vegan", 
-                'Halal': "halal", 
-                'Kosher': "kosher"
-            };
+        async function loadResults(containerId, categories, filters, lon, lat) {
+            if (categories.length == 0) { // TODO make into a error div later
+                console.log("Error: At least one category required");
+                return;
+            }
 
+            if (wheelchair !== "") {
+                filters.push(wheelchair);
+            }
+            if (wifi !== "") {
+                filters.push(wifi);
+            }
+            console.log("filters");
+            console.log(filters);
+
+            const conditions = filters.length == 0 ? "" : `&conditions=${ filters.join("%2C") }`;
+            const catStr = categories.join("%2C");
+            
+            // a lot of nature entries don't have enough detail - no guarantee, but we can get some extra entries
+            const maxResults = containerId == "natural-container" ? 30 : 4;
+            const url = `https://api.geoapify.com/v2/places?categories=${catStr}${conditions}&filter=circle%3A${lon}%2C${lat}%2C${distMeters}&bias=proximity%3A${lon}%2C${lat}&limit=${maxResults}&apiKey=0b813d154863412cb86acd4b37d93c3b`;
+
+            console.log(url);
+
+            const catTags = getCatTags(containerId);
+
+            fetch(url)
+                .then(res => res.text())
+                .then(data => 
+                {
+                    const locations = JSON.parse(data);
+                    locationsArr = locations.features;
+
+                    let dataHTML = "";
+                    for (const place of locationsArr) {
+                        console.log(place);
+                        const info = place.properties;
+
+                        // missing key info
+                        if (!("name" in info) || !("distance" in info)) {
+                            continue;
+                        }
+
+                        const moreinfo = info.datasource.raw;
+
+                        // features of this place to display as tags
+                        let matchingTags = [];
+                        for (const key in catTags) {
+                            if (key in moreinfo) {
+                                if (catTags[key] === "") {
+                                    if (key == "cuisine") {
+                                        const tagVals = moreinfo[key];
+                                        const tagValsArr = tagVals.split(';');
+                                        matchingTags = matchingTags.concat(tagValsArr);
+                                    } else {
+                                        matchingTags.push(moreinfo[key]);
+                                    }
+                                } else {
+                                    matchingTags.push(catTags[key]);
+                                }
+                            }
+                        }
+                        console.log(matchingTags);
+
+                        const tagsHTML = matchingTags.map(makeTag).join('');
+                        let list = `<ul>
+                            <li class='tags'>${tagsHTML}</li>
+                            <li class='place-name'>${info.name}</li>
+                            <li>${metersToKm(info.distance)} km away</li>
+                            <li>${formatAddress(info.formatted)}</li>`; // this is the full address
+
+                        for (const key of basicFields) {
+                            if (moreinfo.hasOwnProperty(key)) {
+                                list += `<li>${formatbasicFields(key, moreinfo[key])}</li>`;
+                            }
+                        }
+                        
+                        list += "</ul>";
+                        dataHTML += "<div class='place-container'><div class='place-info'>" + list + "</div></div>";
+                    }
+
+                    // no results found
+                    if (dataHTML === "") {
+                        dataHTML = "We couldn't find any matching results. You may need to unselect wheelchair only or Wi-Fi only.";
+                    }
+
+                    $(`#${containerId} .panes`).html(dataHTML); 
+                })
+            .catch (error => console.log(error));
+        }
+
+        $(document).ready(function() {
             keys = Object.keys(cateringOptions);
             keys.forEach((k, idx) => {
                 const chkBox = makeChkBox("cateringChk", `chk${idx}cater`, `${cateringOptions[k]}`) 
-                                + makeLabel(`chk${idx}cater`, k)
-                                + "<br>";
+                                + makeLabel(`chk${idx}cater`, k) + "<br>";
                 $('#catering-form').append(chkBox);
             });
             $("#catering-form").append('<input type="submit" value="Search">');
 
-            // populate form for commercial
-            const commercialOptions = {
-                "Supermarkets" : "commercial.supermarket",
-                "Marketplaces": "commercial.marketplace",
-                "Shopping malls": "commercial.shopping_mall",
-                "Clothing": "commercial.clothing",
-                "Banks/ATM": "service.financial.bank%2Cservice.financial.atm",
-                "Public transportation": "public_transport",
-            };
-            
+            // populate form for commercial            
             keys = Object.keys(commercialOptions);
             keys.forEach((k, idx) => {
                 const chkBox = makeChkBox("commercialChk", `chk${idx}commerc`, `${commercialOptions[k]}`) 
-                                + makeLabel(`chk${idx}commerc`, k)
-                                + "<br>";
+                                + makeLabel(`chk${idx}commerc`, k) + "<br>";
                 $('#commercial-form').append(chkBox);
             });
             $("#commercial-form").append('<input type="submit" value="Search">');
 
-            // populate form for nature
-            const naturalOptions = {
-                "Forests" : "natural.forest",
-                "Water": "natural.water",
-                "Mountains": "natural.mountain",
-                "Camping Sites": "camping",
-                "Parks": "leisure.park",
-            };
-            
+            // populate form for nature            
             keys = Object.keys(naturalOptions);
             keys.forEach((k, idx) => {
                 const chkBox = makeChkBox("naturalChk", `chk${idx}nat`, `${naturalOptions[k]}`) 
-                                + makeLabel(`chk${idx}nat`, k)
-                                + "<br>";
+                                + makeLabel(`chk${idx}nat`, k) + "<br>";
                 $('#natural-form').append(chkBox);
             });
             $("#natural-form").append('<input type="submit" value="Search">');
 
 
             // populate form for cultural activities
-            const culturalOptions = {
-                "Famous Tourist Sites": "tourism.sights",
-                "Theatre & Arts": "entertainment.culture",
-                "Museums": "entertainment.museum",
-                "Universities": "building.university%2Cbuilding.college",
-                "Religious Sites": "tourism.sights.place_of_worship",
-                "Historical Sites": "building.historic"
-            };
-            
             keys = Object.keys(culturalOptions);
             keys.forEach((k, idx) => {
                 const chkBox = makeChkBox("culturalChk", `chk${idx}cul`, `${culturalOptions[k]}`) 
-                                + makeLabel(`chk${idx}cul`, k)
-                                + "<br>";
+                                + makeLabel(`chk${idx}cul`, k) + "<br>";
                 $('#cultural-form').append(chkBox);
             });
             $("#cultural-form").append('<input type="submit" value="Search">');
 
             // populate form for other entertainment
-            const entertainOptions = {
-                "All sport centers": "sport",
-                "Fitness centers": "sport.fitness",
-                "Zoo": "entertainment.zoo",
-                "Aquarium": "entertainment.aquarium",
-                "Cinema": "entertainment.cinema",
-                "Theme park": "entertainment.theme_park",
-                "Spa": "leisure.spa",
-                "Casino": "adult.casino",
-            };
-            
             keys = Object.keys(entertainOptions);
             keys.forEach((k, idx) => {
                 const chkBox = makeChkBox("entertainChk", `chk${idx}ent`, `${entertainOptions[k]}`) 
-                                + makeLabel(`chk${idx}ent`, k)
-                                + "<br>";
+                                + makeLabel(`chk${idx}ent`, k) + "<br>";
                 $('#entertain-form').append(chkBox);
             });
             $("#entertain-form").append('<input type="submit" value="Search">');
         });
             
-        $(document).ready(function() {
-            // $("#general-form").submit(async function(event) {
-            //     const destCity = $("form #user-text").val();
-            //     var lonLat = await getLonLat(destCity);
-            // });
-            var lonLat = { lat: 51.50853, lon: -0.12574 };
+        $(document).ready(async function() {
+
+            $("#general-form").submit(async function(event) {
+                event.preventDefault();
+
+                // const destCity = $("form #user-text").val();
+                // lonLat = await getLonLat(destCity);    // TODO not working
+                distMeters = validateDist($("#dist-limit").val());
+                wheelchair = $("#chkWheelchair").prop("checked") ? $("#chkWheelchair").val() : "";
+                wifi = $("#chkWifi").prop("checked") ? $("#chkWifi").val() : "";
+            });
 
             $('#catering-form').submit(async function (event) {
+                console.log(distMeters);
                 event.preventDefault();
 
                 $("#catering-container .panes").html("Concocting a delicious trip for you...");
@@ -514,7 +590,7 @@
                     const option = $(this).val();
                     categories.push(option);
                 });
-                console.log(categories);
+                console.log(categories);                
 
                 loadResults("commercial-container", categories, [], lonLat.lon, lonLat.lat);
             });
