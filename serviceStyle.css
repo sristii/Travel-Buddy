@@ -1,0 +1,143 @@
+/* navigation styling begins here */
+nav {
+    position: fixed;
+    z-index: 10;
+    top: 0;
+    width: 100%;
+    display: inline-block;
+    background-color: #efe6e0;
+}
+nav ul {
+    margin: 0 auto;
+    list-style-type: none;
+    /* display: inline-block; */
+    float: right;
+}
+nav ul li {
+    display: inline-block;
+    box-sizing: border-box;
+}
+nav ul li a {
+    display: inline-block;
+    box-sizing: border-box;
+    padding: 20px 0px;
+    text-align: center;
+    font-size: 18px;
+    width: 140px;
+    color: #7b5946;
+}
+nav ul li a:hover {
+    background-color: #dab9b2;
+}
+/* dropdown navigation associated with About */
+.dropdown {
+    position: relative;
+    display: inline-block;
+}
+/* dropdown nav links hidden by default */
+.dropdown-links {
+    display: none;
+    position: absolute;
+    background-color: #efe6e0;
+    min-width: 120px;
+    z-index: 1;
+}
+.dropdown-links a {
+    padding: 14px 0px;
+    display: block;
+}
+/* dropdown nav links become visible when hovering over About */
+.dropdown:hover .dropdown-links {
+    display: block;
+}
+/* navigation styling ends here */
+
+body, html {
+    height: 100%;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    font-family: 'Nunito', sans-serif;
+}
+a {
+    text-decoration: none;
+}
+#service-backdrop {
+    display: block;
+    position: fixed;
+    top: 0px;
+    width: 100%;
+    height: 800px;
+    background-image: url('servicesBackground.jpg');
+    background-size: cover;
+}
+
+#catalog-backdrop {
+    display: block;
+    position: fixed;
+    top: 0px;
+    width: 100%;
+    height: 800px;
+    background-image: url('catalogBG.jpg');
+    background-size: cover;
+}
+.banner-text {
+    display: center;
+    /* margin-left: 13%; */
+    padding: 40px;
+    margin-top: 5px;
+    position: relative;
+    align-items: center;
+    text-align: center;
+    background-color: rgb(0, 115, 153);
+    box-sizing: border-box;
+    border: 4px dotted #efe6e0;
+    border-radius: 14px;
+    /* width: 95%; */
+    color: rgb(255, 255,255);
+    font-size: 45px;
+}
+.banner-text h1 {
+    line-height: 1.4em;
+    color: #efe6e0;
+    font-size: 26px;
+}
+
+.preview {
+    display: block;
+    position: relative;
+    box-sizing: border-box;
+    border-radius: 14px;
+    background-color: rgb(115, 184, 208);
+    color: rgb(255, 255, 255);
+    width: 70%;
+    height: max-content;
+    margin: 0 auto;
+    margin-bottom: 40px;
+    margin-top: 100px;
+    padding: 30px;
+    font-size: 24px;
+}
+
+.catalog-center {
+    margin: auto;
+    width: 75%;
+}
+
+.preview-row {
+    margin: 50px 0px;
+    display: flex;
+    justify-content: space-around;
+    border-bottom: 4px dotted #7b5946;
+}
+.preview-text {
+    width: 100%;
+    max-width: 600px;
+}
+.preview-text h3 {
+    font-size: 28px;
+}
+.preview-text p {
+    font-size: 20px;
+    line-height: 1.7em;
+}
