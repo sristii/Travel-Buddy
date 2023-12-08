@@ -43,7 +43,7 @@
 
 <body>
 <?php
-    echo "<div class='banner'><div id='banner-overlay'><img src='contact-icon.png' alt='mail icon'><h1>Message Received!</h1></div></div>";
+    echo "<div class='banner'><div id='banner-overlay'><img src='images/contact-icon.png' alt='mail icon'><h1>Message Received!</h1></div></div>";
     echo "<p>Hey " . $_POST["first"] . ",<br /><br />Thank you for reaching out.<br />We received your message and will respond within 2 business days.</p>";
 ?>
 </body>
