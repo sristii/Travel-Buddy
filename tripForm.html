@@ -75,10 +75,6 @@
         </div>
 
         <div id="activity-questions">
-            Search activities within 
-            <input type="text" id="dist-limit" name="maxDist" placeholder="6.5">
-            kilometers of my destination<br />
-
             <p>I want ideas for...</p>
             <input type="checkbox" id="chkCultural" name="activity[]" value="cultural">
             <label for="chkCultural">Cultural and Tourist Activities</label><br />
@@ -136,23 +132,36 @@
     });
 
     function validate() {
-        const distInput = $("#dist-limit").val();
-        
         let err = "";
-
-        // check if user provided numeric distance or didn't provide (then use default)
-        // otherwise output error
-        if (distInput !== "" && isNaN(parseFloat(distInput))) {
-            err += `"Distance is not a number.<br />`;
-        } else {
-            const distNum = parseFloat(distInput);
-            if (distNum < 0.5) {
-                err += `Distance must be at least 0.5 km.<br />`;
-            }
-        }
 
         if ($('input[name="activity[]"]:checked').length === 0) {
             err += 'Please select at least one category of activities to generate ideas for.<br />';
+        }
+
+        // date validation
+        const departDate = new Date($('#departureDate').val());
+        const returnDate = new Date($('#returnDate').val());
+
+        // get today's date (excluding time)
+        const today = new Date().toISOString().split('T')[0];
+        const departDayOnly = departDate.toISOString().split('T')[0];
+
+        // validate departure date
+        console.log(departDate);
+        if (departDayOnly <= today) {
+            err += "Departure date cannot be today. Please select another date in the future.<br />";
+        }
+
+        // validate return date
+        if (returnDate < departDate) {
+            err += 'Return date cannot be before the departure date. Please select a valid return date.';
+        }
+
+        // validate destination is not same as origin location
+        const origin = $('#origin').val().trim().toLowerCase();
+        const destination = $('#destination').val().trim().toLowerCase();
+        if (origin == destination) {
+            err += 'Origin and destination cannot be the same place. Please select different locations.';
         }
 
         if (err !== "") {

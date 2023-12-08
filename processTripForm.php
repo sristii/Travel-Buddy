@@ -353,16 +353,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST'){
     const departDate = <?php echo json_encode($departDate); ?>;
     const returnDate =  <?php echo json_encode($returnDate); ?>;
 
-    const today = new Date().toISOString().split('T')[0];
-    if (departDate === today || departDate < today) {
-        alert('Please select another date in the future (after today).');
-        return;
-    }
-    if (returnDate < departDate) {
-        alert('Return date cannot be before the departure date. Please select a valid return date.');
-        return;
-    }
-
       const options = {
             method: 'GET',
             url: 'https://priceline-com-provider.p.rapidapi.com/community/v1/flights/search',
@@ -465,13 +455,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST'){
             "website",
         ];
 
-        const distMeters = <?php echo json_encode($distanceLimit * 1000); ?>;
+        const distMeters = 10000;
         const wheelchair = <?php echo json_encode($wheelchair); ?>;   // empty string means false
         const wifi = <?php echo json_encode($wifi); ?>;               // empty string means false
         const dietRestrictions = <?php echo json_encode($diet); ?>;
         const allCategories = <?php echo json_encode($catsWanted); ?>;
 
-        // console.log("meters: " + distMeters);
         // console.log("city:" + cityName);
         // console.log("wheelchair: " + wheelchair + ", wifi: " + wifi);
 
@@ -582,7 +571,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST'){
             
             // a lot of nature entries don't have enough detail - no guarantee, but we can get some extra entries
             // const maxResults = containerId == "natural-container" ? 30 : 4;
-            const maxResults = 10;
+            const maxResults = 10; // TODO make bigger
             const url = `https://api.geoapify.com/v2/places?categories=${catStr}${conditionStr}&filter=circle%3A${coordinates.lon}%2C${coordinates.lat}%2C${distMeters}&bias=proximity%3A${coordinates.lon}%2C${coordinates.lat}&limit=${maxResults}&apiKey=0b813d154863412cb86acd4b37d93c3b`;
 
             console.log(url);
