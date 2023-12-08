@@ -30,11 +30,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST'){
                 $diet[] = $dietType;
             }
         }
-    } else {
-        // redirect if accessed directly without submitting the form
-        header('Location: tripForm.html');
-        exit();
     }
+} else {
+    // redirect if accessed directly without submitting the form
+    header('Location: tripForm.html');
+    exit();
 }
 ?>
 
@@ -223,16 +223,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST'){
 
 <script>
     const cityName = <?php echo json_encode($destinationCity); ?>;
-    var coordinates = null;
 
     main(); 
     
     async function main(){
-        coordinates = await hotelCity(); 
+        var coordinates = await hotelCity(); 
 
-        setTimeout(() => {
-            showActivities();
-        }, 10000);
+        showActivities(coordinates);
 
         var departCity = await getLocation(<?php echo json_encode($originCity); ?>);
         var arriveCity = await getLocation(cityName);
@@ -375,13 +372,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST'){
                 class_type: 'ECO',
                 sort_order: 'TRAVELTIME',
                 itinerary_type: 'ROUND_TRIP',
+                // itinerary_type: 'ONE_WAY',
                 location_arrival: arrive,
                 price_max: '20000',
-                price_min: '100',
-                number_of_stops: '0',
+                price_min: '10',
+                number_of_stops: '1',
                 date_departure_return: returnDate,
                 number_of_passengers: '1',
-                duration_max: '2051'
+                duration_max: '3000'
             },
             headers: {
                 'X-RapidAPI-Key':'a00b02125bmsh74e9e69d3c19c41p1583d3jsn618c1d6b72d1',
@@ -398,36 +396,35 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST'){
                 }
                 else {
                     document.getElementById("flights").innerHTML += "<br><h2>FLIGHTS: </h3>";
-                    for(let i = 0; i < 3; i++){
-                       document.getElementById("flights").innerHTML += "<br><h3>Airline: " + response.data.listings[i].airlines[0].name + 
-                       "</h2><br>";
-                        document.getElementById("flights").innerHTML += "<br><p>Seat type: " +  response.data.listings[i].allFareBrandNames+ "</p><br>";
-                        document.getElementById("flights").innerHTML += "<br><p>Seats available: " +  response.data.listings[i].seatsAvailable + "</p><br>";
-                        document.getElementById("flights").innerHTML += "<br><p>Price: $" +  response.data.listings[i].totalPriceWithDecimal.price + "</p><br>";
-                        var dTime = new Date(response.data.listings[i].slices[0].segments[0].departInfo.time.dateTime);
-                        document.getElementById("flights").innerHTML += "<br><p>Departure information: " +  response.data.listings[i].slices[0].segments[0].departInfo.airport.name + " at "+ dTime +"</p><br>";
-            
+                    for (let i = 0; i < 3; i++){
+                        const flightEntry = response.data.listings[i];
+                        console.log(flightEntry);
+
+                        document.getElementById("flights").innerHTML += "<br><h3>Airline: " + flightEntry.airlines[0].name + "</h2>";
+                        document.getElementById("flights").innerHTML += "<br><p>Seat type: " +  flightEntry.allFareBrandNames+ "</p>";
+                        document.getElementById("flights").innerHTML += "<br><p>Seats available: " +  flightEntry.seatsAvailable + "</p>";
+                        document.getElementById("flights").innerHTML += "<br><p>Price: $" +  flightEntry.totalPriceWithDecimal.price + "</p>";
+                        var dTime = new Date(flightEntry.slices[0].segments[0].departInfo.time.dateTime);
+                        document.getElementById("flights").innerHTML += "<br><p>Layovers: " +  (flightEntry.slices[0].segments.length - 1) + "</p>";
+                        document.getElementById("flights").innerHTML += "<br><p>Departure information: " +  flightEntry.slices[0].segments[0].departInfo.airport.name + " at "+ dTime +"</p>";
                     }
                 }                
             } catch (error) {
                 console.error(error);
             }
-
         }
 
     
-        // POINTA
+        // ACTIVITIES
 
         const cateringTypes = [
             "catering.restaurant",
-            "catering.cafe", 
-            "catering.bar"
+            "catering.cafe"
         ];
 
         const cateringTags = {
             "catering.restaurant": 'Restaurant',
             "catering.cafe": 'Cafe', 
-            "catering.bar": 'Bar',
             "vegetarian": "Vegetarian",
             "vegan": "Vegan", 
             "halal": "Halal", 
@@ -468,11 +465,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST'){
             "website",
         ];
 
-        const distMeters = 7000;
-        const wheelchair = "";
-        const wifi = "";
-        const dietRestrictions = ["vegan"];
-        const allCategories = ["commercial", "catering", "natural"];
+        const distMeters = <?php echo json_encode($distanceLimit * 1000); ?>;
+        const wheelchair = <?php echo json_encode($wheelchair); ?>;   // empty string means false
+        const wifi = <?php echo json_encode($wifi); ?>;               // empty string means false
+        const dietRestrictions = <?php echo json_encode($diet); ?>;
+        const allCategories = <?php echo json_encode($catsWanted); ?>;
 
         // console.log("meters: " + distMeters);
         // console.log("city:" + cityName);
@@ -567,7 +564,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST'){
             }
         }
     
-        async function loadResults(container, categories, conditions) {
+        async function loadResults(container, categories, conditions, coordinates) {
             const containerId = `#${container}-container`;
             $(`${containerId} .panes`).html("Searching...");
 
@@ -661,13 +658,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST'){
             });
         }
 
-        function loadCategory(category, tags, tagDisplayNames, conditions) {
+        function loadCategory(category, tags, tagDisplayNames, conditions, coordinates) {
             $(`#${category}-container`).css("display", "block");
             // create filters
             makeCategoryFilters(tagDisplayNames, category);
 
             // make API call to populate this category's results
-            loadResults(category, tags, conditions);
+            loadResults(category, tags, conditions, coordinates);
         }
 
         function makeClickEvent(button, catContainer, catForm) {
@@ -718,29 +715,28 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST'){
             });
         }
 
-        async function showActivities() {
-            console.log("my city" + cityName);
-            console.log("my coordinates" + coordinates);
+        async function showActivities(coordinates) {
+            console.log("my coordinates: " + coordinates);
 
             // food
             if (allCategories.includes("catering")) {
                 console.log(dietRestrictions);
-                loadCategory("catering", cateringTypes, Object.values(cateringTags), dietRestrictions);
+                loadCategory("catering", cateringTypes, Object.values(cateringTags), dietRestrictions, coordinates);
             }
             
             // commercial
             if (allCategories.includes("commercial")) {
-                loadCategory("commercial", Object.keys(commercialTags), Object.values(commercialTags), []);
+                loadCategory("commercial", Object.keys(commercialTags), Object.values(commercialTags), [], coordinates);
             }
 
             // natural
             if (allCategories.includes("natural")) {
-                loadCategory("natural", Object.keys(naturalTags), Object.values(naturalTags), []);
+                loadCategory("natural", Object.keys(naturalTags), Object.values(naturalTags), [], coordinates);
             }
 
             // tourist
             if (allCategories.includes("cultural")) {
-                loadCategory("cultural", Object.keys(culturalTags), Object.values(culturalTags), []);
+                loadCategory("cultural", Object.keys(culturalTags), Object.values(culturalTags), [], coordinates);
             }
         }
  </script>
