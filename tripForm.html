@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Build Your Trip</title>
+    <script src="https://code.jquery.com/jquery-3.7.1.slim.js" integrity="sha256-UgvvN8vBkgO0luPSUl2s8TIlOSYRoGFAX4jlCIm9Adc=" crossorigin="anonymous"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            text-align: center; 
+        }
+
+        form {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        #basic-questions label {
+            display: block;
+            margin-bottom: 8px;
+        }
+
+        #basic-questions input, #basic-questions select {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 16px;
+            box-sizing: border-box;
+        }
+
+        button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        /* Activities section styling */
+        #dietQuestion {
+            display: none;
+        }
+
+        #activity-questions {
+            text-align: left;
+        }
+    </style>
+</head>
+<body>
+
+  <h1>Build Your Perfect Trip</h1>
+  <p>
+    Just a few questions so we can find the perfect flights and hotels for you! 
+  </p>
+
+    <form id="general-form" onSubmit="return validate()" action="processTripForm.php" method="post">
+        <div id="basic-questions">
+            <label for="destination">Where are you going?</label>
+            <input type="text" id="destination" name="destination" required>
+
+            <label for="origin">Where are you coming from?</label>
+            <input type="text" id="origin" name="origin" required>
+
+            <label for="departureDate">When are you leaving?</label>
+            <input type="date" id="departureDate" name="departureDate" required>
+
+            <label for="returnDate">When are you coming back?</label>
+            <input type="date" id="returnDate" name="returnDate">
+        </div>
+
+        <div id="activity-questions">
+            Search activities within 
+            <input type="text" id="dist-limit" name="maxDist" placeholder="6.5">
+            kilometers of my destination<br />
+
+            <p>I want ideas for...</p>
+            <input type="checkbox" id="chkCultural" name="activity[]" value="cultural">
+            <label for="chkCultural">Cultural and Tourist Activities</label><br />
+
+            <input type="checkbox" id="chkNature" name="activity[]" value="natural">
+            <label for="chkNature">Nature Exploration</label><br />
+
+            <input type="checkbox" id="chkCommercial" name="activity[]" value="commercial">
+            <label for="chkCommercial">Shopping and Spending</label><br />
+
+            <input type="checkbox" id="chkFood" name="activity[]" value="catering">
+            <label for="chkFood">Food and Drink</label><br />
+
+            <input type="checkbox" id="chkAll">
+            <label for="chkAll">All the above</label><br />
+
+            <div id="dietQuestion">
+                <p>(optional) My dietary restrictions are...</p>
+                <input type="checkbox" id="chkVegetarian" name="diet[]" value="vegetarian">
+                <label for="chkVegetarian">Vegetarian</label><br />
+
+                <input type="checkbox" id="chkVegan" name="diet[]" value="vegan">
+                <label for="chkVegan">Vegan</label><br />
+
+                <input type="checkbox" id="chkHalal" name="diet[]" value="halal">
+                <label for="chkHalal">Halal</label><br />
+
+                <input type="checkbox" id="chkKosher" name="diet[]" value="kosher">
+                <label for="chkKosher">Kosher</label><br />
+            </div>
+
+            <p>(optional) Limit all places to...</p>
+            <input type="checkbox" id="chkWheelchair" name="accessibility" value="wheelchair"/>
+            <label for="chkWheelchair">Wheelchair-friendly places</label><br />
+
+            <input type="checkbox" id="chkWifi" name="wifi" value="internet_access"/>
+            <label for="chkWifi">Places with internet access</label><br />
+
+        </div>
+        <input type='submit' value="Build my trip!">
+        <div class="input-err"></div>
+</form>
+</body>
+
+<script>
+    // if the "All the above" checkbox is clicked, check all the other activities checkboxes.
+    $('#chkAll').on('click', function() {
+        $('input[name="activity[]"]').prop('checked', this.checked);
+    });
+
+    // Toggle the visibility of the question about dietary restrictions
+    // based on whether the chkFood checkbox is checked
+    $('#chkFood').on('change', function() {
+        $('#dietQuestion').toggle(this.checked);
+    });
+
+    function validate() {
+        const distInput = $("#dist-limit").val();
+        
+        let err = "";
+
+        // check if user provided numeric distance or didn't provide (then use default)
+        // otherwise output error
+        if (distInput !== "" && isNaN(parseFloat(distInput))) {
+            err += `"Distance is not a number.<br />`;
+        } else {
+            const distNum = parseFloat(distInput);
+            if (distNum < 0.5) {
+                err += `Distance must be at least 0.5 km.<br />`;
+            }
+        }
+
+        if ($('input[name="activity[]"]:checked').length === 0) {
+            err += 'Please select at least one category of activities to generate ideas for.<br />';
+        }
+
+        if (err !== "") {
+            $(".input-err").html("Fix the following errors to continue:<br /><br />" + err);
+            return false;
+        }
+
+        $(".input-err").html("");
+        return true;
+    }
+</script>
+</html>
