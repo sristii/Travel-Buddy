@@ -56,16 +56,16 @@
 
   <h1>Build Your Perfect Trip</h1>
   <p>
-    Just a few questions so we can find the perfect flights and hotels for you! 
+    Just a few questions so we can find the perfect flights, hotels, and activities for you! 
   </p>
 
     <form id="general-form" onSubmit="return validate()" action="processTripForm.php" method="post">
         <div id="basic-questions">
             <label for="destination">Where are you going?</label>
-            <input type="text" id="destination" name="destination" required>
+            <input type="text" id="destination" name="destination" required placeholder="city, state OR city, country">
 
             <label for="origin">Where are you coming from?</label>
-            <input type="text" id="origin" name="origin" required>
+            <input type="text" id="origin" name="origin" required placeholder="city, state OR city, country">
 
             <label for="departureDate">When are you leaving?</label>
             <input type="date" id="departureDate" name="departureDate" required>
@@ -134,10 +134,6 @@
     function validate() {
         let err = "";
 
-        if ($('input[name="activity[]"]:checked').length === 0) {
-            err += 'Please select at least one category of activities to generate ideas for.<br />';
-        }
-
         // date validation
         const departDate = new Date($('#departureDate').val());
         const returnDate = new Date($('#returnDate').val());
@@ -162,6 +158,10 @@
         const destination = $('#destination').val().trim().toLowerCase();
         if (origin == destination) {
             err += 'Origin and destination cannot be the same place. Please select different locations.';
+        }
+
+        if ($('input[name="activity[]"]:checked').length === 0) {
+            err += 'Please select at least one category of activities to generate ideas for.<br />';
         }
 
         if (err !== "") {
