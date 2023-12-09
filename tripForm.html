@@ -7,19 +7,27 @@
     <script src="https://code.jquery.com/jquery-3.7.1.slim.js" integrity="sha256-UgvvN8vBkgO0luPSUl2s8TIlOSYRoGFAX4jlCIm9Adc=" crossorigin="anonymous"></script>
     <style>
         body {
-            font-family: Arial, sans-serif;
-            margin: 20px;
+            font-family: Roboto, sans-serif;
+            /* margin: 20px; */
             text-align: center; 
+            background-color: white; 
         }
 
         form {
             max-width: 600px;
             margin: 0 auto;
+            /* border-style: solid;  */
+            padding: 10px; 
+            border-radius: 6px; 
+            background-color: #c9ebff; 
+            color: black; 
+            /* background-color:rgb(170, 225, 255);  */
         }
 
         #basic-questions label {
             display: block;
             margin-bottom: 8px;
+            font-weight: bold; 
         }
 
         #basic-questions input, #basic-questions select {
@@ -50,6 +58,16 @@
         #activity-questions {
             text-align: left;
         }
+
+        input[type=submit]{
+            background-color: black; 
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
     </style>
 </head>
 <body>
