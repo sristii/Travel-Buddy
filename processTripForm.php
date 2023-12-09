@@ -59,15 +59,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST'){
         }
         h2 {
             margin: 10px 0px;
-            color: grey;
+            color: #1C6B80;
             text-align: center;
             width: 100%;
         }
-        .input-err {
-            display: block;
-            font-size: 18px;
-            color: black;
-        }
+
+
         #cats-container {
             display: block;
             width: 100%;
@@ -116,6 +113,35 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST'){
         #entertain-container {
             background-color: #bbd8b3ff;
         }
+        /* hotels */
+        #hotels {
+            display: block;
+            width: 100%;
+            margin: 0 auto;
+            padding: 0px;
+        }
+        #hotel-container {
+            background-color: grey;
+            width: 100%;
+            padding: 10px 0px 30px 0px;
+            margin: 0px;
+            display: block;
+        }
+        /* flights */
+        #flights {
+            display: block;
+            width: 100%;
+            margin: 0 auto;
+            padding: 0px;
+        }
+        #flight-container {
+            background-color: grey;
+            width: 100%;
+            padding: 10px 0px 30px 0px;
+            margin: 0px;
+            display: block;
+        }
+
         form {
             display: block;
             margin-bottom: 10px;
@@ -180,10 +206,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST'){
 </head>
 <body>
 
-    <h1>Here are your results:</h1>
+    <h1>Here's what we found for you!</h1>
 
-    <div id="flights"></div>
-    <div id="hotels"></div>
+    <div id="flights">
+        <div id='flight-container'>
+            <div class="panes"></div>
+        </div>
+    </div>
+
+    <div id="hotels">
+        <div id='hotel-container'>
+            <div class="panes"></div>
+        </div>
+    </div>
 
     <h1>ACTIVITIES TO DO</h1>
     <div id="cats-container">
@@ -265,9 +300,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST'){
          } catch (error) {
             console.error(error);
          }
-         
      }
-     async function displayHotel(cityID){
+
+    async function displayHotel(cityID){
          const checkIn = <?php echo json_encode($departDate); ?>;
          const checkOut = <?php echo json_encode($returnDate); ?>;
 
@@ -287,47 +322,37 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST'){
         };
 
         try {
-            document.getElementById("hotels").innerHTML = "Loading hotels...";
+            $("#hotel-container .panes").html("Loading hotels...");
             const response = await axios.request(options);
-            console.log(response); 
-            document.getElementById("hotels").innerHTML = "";
-            if(response.data.hotels == null){
-                document.getElementById("hotels").innerHTML = "<br><h2>No hotel availability in the area on those dates. Try adjusting the dates.<br>";
-            }
-            else if(response.data.hotels.length <= 5){
-            document.getElementById("hotels").innerHTML += "<br><h3>HOTELS: </h3>";
-                for(let i = 0; i < response.data.hotels.length; i++){
-                    document.getElementById("hotels").innerHTML += "<br><h2>Hotel Name: " + response.data.hotels[i].name + 
-                    "</h2><br>";
-                    document.getElementById("hotels").innerHTML += "<br><p>Average guest ratings (out of " +  response.data.hotels[i].totalReviewCount + " reviews): " + response.data.hotels[i].overallGuestRating+ "</p><br>";
-                    document.getElementById("hotels").innerHTML += "<br><p>Minimum available price: " + response.data.hotels[i].ratesSummary.minCurrencyCode + response.data.hotels[i].ratesSummary.minPrice + 
-                    "</p><br>";
-                    const address = response.data.hotels[i].location.address; 
-                    document.getElementById("hotels").innerHTML += "<br><p>Address: "+ address.addressLine1 + ", " + address.cityName + ", " + address.countryName + " " + address.zip + "</p><br>";
-                    document.getElementById("hotels").innerHTML += '<br><img src= "' + response.data.hotels[i].media.url + 
-                '" width="250px">';
+            // console.log(response); 
+
+            const hotelsList = response.data.hotels;
+            if (hotelsList == null){
+                $("#hotel-container .panes").html("No hotel availability in the area on those dates. Try adjusting the dates.");
+            } else {
+                const numHotels = Math.min(hotelsList.length, 5);
+
+                let hotelsInfo = "<h2>HOTELS:</h2>";
+                for(let i = 0; i < numHotels; i++){
+                    const currHotel = hotelsList[i];
+                    const address = currHotel.location.address;
+
+                    hotelsInfo += `<div class='place-info'><ul>
+                        <li class='place-name'>Hotel Name: ${currHotel.name}</li>
+                        <li>Average guest ratings (out of ${currHotel.totalReviewCount} reviews): ${currHotel.overallGuestRating}</li>
+                        <li>Minimum available price: ${currHotel.ratesSummary.minCurrencyCode + currHotel.ratesSummary.minPrice}</li>
+                        <li>Address: ${address.addressLine1}, ${address.cityName}, ${address.countryName} ${address.zip}</li>
+                        <li><img src= "${currHotel.media.url}" width="250px"></li>
+                        </ul></div>`;
                 }
-            }
-            else{
-                document.getElementById("hotels").innerHTML += "<br><h2>HOTELS: </h3>";
-                for(let i = 0; i < 5; i++){
-                    document.getElementById("hotels").innerHTML += "<br><h3>Hotel Name: " + response.data.hotels[i].name + 
-                    "</h2><br>";
-                    document.getElementById("hotels").innerHTML += "<br><p>Average guest ratings (out of " +  response.data.hotels[i].totalReviewCount + " reviews): " + response.data.hotels[i].overallGuestRating+ "</p><br>";
-                    document.getElementById("hotels").innerHTML += "<br><p>Minimum available price: " + response.data.hotels[i].ratesSummary.minCurrencyCode + response.data.hotels[i].ratesSummary.minPrice + 
-                    "</p><br>";
-                    const address = response.data.hotels[i].location.address; 
-                    document.getElementById("hotels").innerHTML += "<br><p>Address: "+ address.addressLine1 + ", " + address.cityName + ", " + address.countryName + " " + address.zip + "</p><br>";
-                    document.getElementById("hotels").innerHTML += '<br><img src= "' + response.data.hotels[i].media.url + 
-                '" width="250px">';
-                }
-            }
-            
+
+                $(`#hotel-container .panes`).html(hotelsInfo); 
+            }            
         } catch (error) {
             console.error(error);
         }
 
-     }
+    }
 
     async function getLocation(city) {
         const options = {
@@ -377,27 +402,34 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST'){
             }
             };
             try {
-                document.getElementById("flights").innerHTML = "Loading flights...";
+                $("#flight-container .panes").html("Loading flights...");
                 const response = await axios.request(options);
-                document.getElementById("flights").innerHTML = "";
-                console.log(response);
+                // console.log(response);
                 if(response.data.listings == null){
-                    document.getElementById("flights").innerHTML = "<br><h2>No flight availability on those dates. Try adjusting the dates or where you're flying from.<br>";
+                    $("#flight-container .panes").html("No flight availability on those dates. Try adjusting the dates or where you're flying from.");
                 }
                 else {
-                    document.getElementById("flights").innerHTML += "<br><h2>FLIGHTS: </h3>";
-                    for (let i = 0; i < 3; i++){
+                    let flightsInfo = "<h2>FLIGHTS:</h2>";
+                    const numFlights = Math.min(3, response.data.listings.length);
+
+                    for (let i = 0; i < numFlights; i++){
                         const flightEntry = response.data.listings[i];
+                        const segments = flightEntry.slices[0].segments;
+                        var dTime = new Date(segments[0].departInfo.time.dateTime);
+
                         console.log(flightEntry);
 
-                        document.getElementById("flights").innerHTML += "<br><h3>Airline: " + flightEntry.airlines[0].name + "</h2>";
-                        document.getElementById("flights").innerHTML += "<br><p>Seat type: " +  flightEntry.allFareBrandNames+ "</p>";
-                        document.getElementById("flights").innerHTML += "<br><p>Seats available: " +  flightEntry.seatsAvailable + "</p>";
-                        document.getElementById("flights").innerHTML += "<br><p>Price: $" +  flightEntry.totalPriceWithDecimal.price + "</p>";
-                        var dTime = new Date(flightEntry.slices[0].segments[0].departInfo.time.dateTime);
-                        document.getElementById("flights").innerHTML += "<br><p>Layovers: " +  (flightEntry.slices[0].segments.length - 1) + "</p>";
-                        document.getElementById("flights").innerHTML += "<br><p>Departure information: " +  flightEntry.slices[0].segments[0].departInfo.airport.name + " at "+ dTime +"</p>";
+                        flightsInfo += `<div class='place-info'><ul>
+                        <li class='place-name'>Airline: ${flightEntry.airlines[0].name}</li>
+                        <li>Seat type: ${flightEntry.allFareBrandNames}</li>
+                        <li>Seats available: ${flightEntry.seatsAvailable}</li>
+                        <li>Price: $${flightEntry.totalPriceWithDecimal.price}</li>
+                        <li>Layovers: ${segments.length - 1}</li>
+                        <li>Departure information: ${segments[0].departInfo.airport.name} at ${dTime}</li>
+                        </ul></div>`;
                     }
+
+                    $(`#flight-container .panes`).html(flightsInfo); 
                 }                
             } catch (error) {
                 console.error(error);
@@ -625,7 +657,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST'){
 
                     // no results found
                     if (dataHTML === "") {
-                        dataHTML = "We couldn't find any matching results. You may need to unselect wheelchair only or Wi-Fi only.";
+                        dataHTML = "We couldn't find any matching results.";
                     }
 
                     $(`${containerId} .panes`).html(dataHTML); 
