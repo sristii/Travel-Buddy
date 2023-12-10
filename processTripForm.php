@@ -899,7 +899,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST'){
         // );
 
         $(document).ready(function() {
-            if (package == "basic") {
+            if (package == "Basic") {
                 $("#title-activities").css("display", "none");
             }
 

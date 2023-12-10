@@ -216,10 +216,9 @@
     const package = <?php echo json_encode($package); ?>;
     console.log("package" + package); // TODO package is null
 
-    // const package = "basic";
-    if (package == "basic") {
+    if (package == "Basic") {
         $("#activity-questions").hide();
-    } else if (package == "gold") {
+    } else if (package == "Gold") {
         $("#chkFood").hide();
         $("#foodLabel").hide();
     }
@@ -269,7 +268,7 @@
             err += 'Origin and destination cannot be the same place. Please select different locations.';
         }
 
-        if (package != "basic" && $('input[name="activity[]"]:checked').length === 0) {
+        if (package != "Basic" && $('input[name="activity[]"]:checked').length === 0) {
             err += 'Please select at least one category of activities to generate ideas for.<br />';
         }
 
