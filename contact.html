@@ -3,27 +3,11 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=PT-Serif">
     <title>Contact</title>
     <style type="text/css">
-        body {
-            background-color: #FAE7C6;
-            background-image: url(images/contact-background.jpeg);
-            background-position: top;
-            background-repeat: no-repeat;
-            background-attachment: fixed;
-            background-size: cover;
-        }
-        .banner {
-            display: block;
-            margin: 0 auto;
-            height: 250px;
-            text-align: center;
-        }
-        img {
-            margin-top: 20px;
-            margin-bottom: 10px;
-            height: 150px;
-        }
         h2 {
             display: block;
             margin: 0 auto;
@@ -39,14 +23,25 @@
             max-width: 600px;
             box-sizing: border-box;
             background-color: aliceblue;
+            border-radius: 25px;
+            margin-top: 40px;
         }
         form {
+            background-color: aliceblue;
+            border-radius: 5px;
             padding-top: 4px;
             display: block;
             margin: 0 auto;
             width: 100%;
             max-width: 410px;
             box-sizing: border-box;
+            
+        }
+        #mailicon {
+                display: block;
+  margin-left: auto;
+  margin-right: auto;
+  width: 20%;
         }
         form h4 {
             text-align: center;
@@ -82,20 +77,26 @@
             height: 140px;
         }
         input[type="submit"] {
-            display: block;
-            margin: 30px 0px;
-            text-align: center;
-            padding: 20px 0px;
-            background-color: #84A9C0;
-            color: #2a3d45;
-            font-size: 22px;
-            font-weight: 600;
-            font-family: 'Averia Serif Libre', serif;;
-            border-radius: 10px;
+                display: inline-block;
+        align-content: center;
+        text-align: center;
+        background-color: #79adc0;
+        color: rgb(255, 255, 255);
+        font-size: 22px;
+        font-weight: 800;
+        padding: 20px;
+        border-radius: 20px;
+        /* Adding rounded corners */
+        border: none;
+        cursor: pointer;
+        transition: transform 0.3s, background-color 0.3s;
         }        
         input[type="submit"]:hover {
-            background-color: #47606b;
-            color: white;
+                background-color: #4e92a6;
+        /* Change color on hover */
+        transform: scale(1.1);
+        /* Scale the button slightly on hover */
+        color: white;
         }
         input[type="checkbox"] {
             width: fit-content;
@@ -179,29 +180,39 @@
     </script>
 </head>
 <body>
-    <nav>
-        <a href="index.html" class="logo"></a>
-        <ul>
-            <li><a href="index.html">Home</a></li>
-            <li>
-                <div class="dropdown">
-                    <a href="mission.html" class="dropdown-btn">About</a>
-                    <div class="dropdown-links">
-                        <a href="mission.html">Our Services</a>
-                        <a href="impact.html">Our Story</a>
-                    </div>
-                </div> 
-            </li>
-            <li><a href="contact.html">Contact</a></li>
-        </ul>
-    </nav>
+        <nav class="navbar">
+                <ul class="nav-links">
+                        <li><a href="services.html">Our Services</a></li>
+                  <li><a href="catalog.html">Plan Your Trip</a></li>
+                  <li><a href="index.html" class="logo"></a></li>
+                  
+                  <li><a href="story.html">Our Story</a> </li>
+                  <li><a href="contact.html">Contact Us</a></li>
+                </ul>
+                
+                  <div class="user-icon">
+                        <a href="login.php"><i class="fa fa-user" style="font-size:36px; color:white;"></i></a>
+                  </div>
 
-    <div class="banner">
-        <img src="images/contact-icon.png" alt="mail icon"><h2>Get in Touch</h2>
-    </div>
+                   </nav>
+            
+              <header class="hero-section">
+                <!-- Image spanning the entire page -->
+                <img
+                  src="https://images.unsplash.com/photo-1430609098125-581618d0482f?q=80&w=2940&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+                  alt="Hero Image">
+                <div class="hero-text">Contact Us</div>
+              </header>
+
+    
     <div id="form-wrapper">
+        <div class="banner" style:"display: flex; justify-content: center; text-align: center;">
+                <br /><br />
+                <h2>Get in Touch</h2><br />
+                <img src="images/contact-icon.png" id = "mailicon" alt="mail icon" style="width: 50px; text-align: center;">
+            </div>
         <form onSubmit="return validate()" method="POST" action="confirmation.php">
-            <h4>If you have any questions or need help, please fill out the form below.</h4>
+            <h4>If you have any questions or need help, please fill out the form below.</h4><br>
             <input type='text' name='first' id="fname" placeholder="First name*"/><br />
             <input type='text' name='last' id="lname" placeholder="Last Name*"/><br />
             <input type='text' name='email' id="email" placeholder="Email*"/><br />
@@ -215,15 +226,31 @@
                 <option value="feedback">General Question</option>
                 <option value="other">Other</option>
             </select><br />
-            <textarea id="message" placeholder="Message*"></textarea><br />
+            <textarea id="message" placeholder="Message*"></textarea><br /><br /><br />
             <input type="submit" value="Submit"/>
             <div id="error">&nbsp;</div>
         </form>
     </div>
   
-    <!-- <footer class="footer">
-        
-    </footer> -->
+    <footer class="footer">
+        <div class="left">
+          <!-- Contact Information -->
+          <p>Contact Us</p>
+          <p>Email: contact@travelbuddy.com</p>
+          <p>Phone: +123456789</p>
+        </div>
+        <div class="social-icons">
+          <!-- Social Media Icons -->
+          <a href="#" class="icon instagram"><i class="fa fa-instagram"></i></a>
+          <a href="#" class="icon facebook"><i class="fa fa-facebook"></i></a>
+        </div>
+        <div class="right">
+          <!-- Copyright Statement -->
+          <p>&copy; 2023 </p>
+          <p>Your Online Travel Bud. </p>
+          <p>All rights reserved.</p>
+        </div>
+      </footer>
 </body>
 </html>
 
