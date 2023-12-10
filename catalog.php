@@ -404,7 +404,8 @@
             <div class="col-75">
               <div class="container">
                 <form action = "tripForm.php" onSubmit="return validate()" method="POST">
-                    <br><h3>Payment Details</h3> <br>
+                   <br><h3>Payment Details</h3> <br>
+
                     Order Summary: 
                     <p id="packageType">Package:</p>
                     <p id="total">Total: $</p><br>

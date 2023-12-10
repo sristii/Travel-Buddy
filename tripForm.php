@@ -220,9 +220,10 @@
     const lname = <?php echo json_encode($last_name); ?>;
     const email = <?php echo json_encode($email); ?>;
     const card = <?php echo json_encode($card); ?>;
-    const package = <?php echo json_encode($package); ?>;
-    console.log("package" + package); // TODO package is null
+    const package = <?php echo json_encode($package);?>;
 
+
+    // const package = "basic";
     if (package == "Basic") {
         $("#activity-questions").hide();
     } else if (package == "Gold") {
