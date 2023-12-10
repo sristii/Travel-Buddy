@@ -208,7 +208,8 @@
         function purchase(name, cost){
             document.getElementById("catalog").style.display = 'none';
             document.getElementById("payBox").style.display = 'block';
-            document.getElementById("packageType").value = name;
+            document.getElementById("packageType").innerHTML = "Package: "+name;
+            document.getElementById('package').value = name;
             document.getElementById("total").innerHTML = "Total: $"+cost;
         }
 
@@ -247,7 +248,7 @@
    <br>
 
     <div class="catalog-center" id="catalog">
-        <div class="box" onclick="purchase('basic', 0)" id ="box1">
+        <div class="box" onclick="purchase('Basic', 0)" id ="box1">
             <h3>Basic Plan</h3>
             <br><br>
             With the basic plan you will get information about flights and hotels for
@@ -257,7 +258,7 @@
             <br><br><br>
             <h3>Cost: $50</h3>
         </div>
-        <div class="box" onclick="purchase('gold', 80)" id="box2">
+        <div class="box" onclick="purchase('Gold', 80)" id="box2">
             <h3>Gold Plan</h3>
             <br><br>
             Our Gold Option adds events for you do at your destination! You will get all of the 
@@ -267,7 +268,7 @@
             <br><br><br>
             <h3>Cost: $80</h3>
         </div>
-        <div class="box" onclick="purchase('premium', 150)" id="box3">
+        <div class="box" onclick="purchase('Premium', 150)" id="box3">
             <h3>Premium Plan</h3>
             <br><br>
             Our Premium Option provides peak user personalization and a guaranteed fun time! You will get information about flights, hotels, locations, and even 
@@ -281,11 +282,14 @@
         <div class="row">
             <div class="col-75">
               <div class="container">
-                <form action = "tripForm.php" onSubmit="return validate()" method="POST">
+<<<<<<< HEAD
+                  <form action = "tripForm.php" onSubmit="return validate()" method="GET">
+=======
+                <form action = "tripForm.php" onSubmit="return validate()" method="GET">
+>>>>>>> 58b7230a3b15ecba94be4c2404dc983dee6aaf43
                     <h3>Billing Info</h3>
                     Order Summary: 
-                    <p>Package:</p>
-                    <input type="text" id="packageType" name="package" value="" readonly>
+                    <p id="packageType">Package:</p>
                     <p id="total">Total: $</p>
                     <h3>Billing Info</h3>
                     <label>First Name* </label><input type='text' name='first' id="fname"/>
@@ -316,6 +320,7 @@
                           <input type="text" id="expyear" name="expyear" ><br>
                           <label for="cvv">CVV</label>
                           <input type="text" id="cvv" name="cvv" >
+                          <input type="hidden" id="package" name="package" value="">
                       </div>
                     </div>
                   </div>
