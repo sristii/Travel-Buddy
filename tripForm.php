@@ -213,10 +213,10 @@
     const lname = <?php echo json_encode($last_name); ?>;
     const email = <?php echo json_encode($email); ?>;
     const card = <?php echo json_encode($card); ?>;
-    // const package = <?php echo json_encode($package); ?>;
-    // console.log("package" + package); // TODO package is null
+    const package = <?php echo json_encode($package); ?>;
+    console.log("package" + package); // TODO package is null
 
-    const package = "basic";
+    // const package = "basic";
     if (package == "basic") {
         $("#activity-questions").hide();
     } else if (package == "gold") {
@@ -226,7 +226,12 @@
 
     // if the "All the above" checkbox is clicked, check all the other activities checkboxes.
     $('#chkAll').on('click', function() {
-        $('input[name="activity[]"]').prop('checked', this.checked);
+        const isChecked = this.checked;
+        $('input[name="activity[]"]').each(function() {
+            if ($(this).is(':visible')) {
+                $(this).prop('checked', isChecked);
+            }
+        });
     });
 
     // Toggle the visibility of the question about dietary restrictions
@@ -264,7 +269,7 @@
             err += 'Origin and destination cannot be the same place. Please select different locations.';
         }
 
-        if ($('input[name="activity[]"]:checked').length === 0) {
+        if (package != "basic" && $('input[name="activity[]"]:checked').length === 0) {
             err += 'Please select at least one category of activities to generate ideas for.<br />';
         }
 

@@ -259,7 +259,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST'){
         </div>
     </div>
 
-    <h1>Activities</h1>
+    <h1 id="title-activities">Activities</h1>
     <div id="cats-container">
         <div class='catResults' id='catering-container'>
             <h2>FOOD & DRINK</h2>
@@ -899,6 +899,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST'){
         // );
 
         $(document).ready(function() {
+            if (package == "basic") {
+                $("#title-activities").css("display", "none");
+            }
+
             let hiddenInfo = `<input type='hidden' name='fname' value='${fname}'/>`
             + `<input type='hidden' name='lname' value='${lname}'/>`
             + `<input type='hidden' name='email' value='${email}'/>`

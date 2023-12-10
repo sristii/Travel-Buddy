@@ -284,7 +284,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST'){
             }
 
             if (activitiesArr.length == 0) {
-                $("#activity-container .panes").html("You didn't save any activities."); 
+                if (package == 'basic') {
+                    $("#activity-container .panes").html("Activities are available on the gold or premium plan."); 
+                } else {
+                    $("#activity-container .panes").html("You didn't save any activities."); 
+                }
             } else {
                 const activitiesHtml = activitiesArr.join('');
                 $("#activity-container .panes").html(activitiesHtml); 
