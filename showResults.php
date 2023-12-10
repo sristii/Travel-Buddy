@@ -39,9 +39,11 @@ if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 }
 
+$tripInfoText = htmlspecialchars($tripInfo, ENT_QUOTES, 'UTF-8');
+
 // Performing insert query execution
 $sql = "INSERT INTO users  VALUES ('$first_name', 
-        '$last_name','$email','$card', '$package', '$tripInfo')";
+        '$last_name','$email','$card', '$package', '$tripInfoText')";
         
 if (!mysqli_query($conn, $sql)){
     echo "ERROR: Sorry $sql. " . mysqli_error($conn);
