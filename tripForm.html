@@ -163,7 +163,7 @@
         // validate departure date
         console.log(departDate);
         if (departDayOnly <= today) {
-            err += "Departure date cannot be today. Please select another date in the future.<br />";
+            err += "Departure date cannot be in the past or today. Please select another date in the future.<br />";
         }
 
         // validate return date
