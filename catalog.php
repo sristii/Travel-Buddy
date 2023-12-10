@@ -281,7 +281,11 @@
         <div class="row">
             <div class="col-75">
               <div class="container">
+<<<<<<< HEAD
                   <form action = "tripForm.php" onSubmit="return validate()" method="GET">
+=======
+                <form action = "tripForm.php" onSubmit="return validate()" method="GET">
+>>>>>>> 58b7230a3b15ecba94be4c2404dc983dee6aaf43
                     <h3>Billing Info</h3>
                     Order Summary: 
                     <p id="packageType">Package:</p>
