@@ -1,5 +1,4 @@
 <?php
-        // Initialize the session
         session_start();
         
         // Check if the user is logged in, if not then redirect him to login page
@@ -25,7 +24,21 @@
         $result = $conn->query($sql);
 
         //printing out basic html first
-         echo "<h1 class=my-5>Here are your previous trips!</h1>";
+         echo '<nav class="navbar">
+                <ul class="nav-links">
+                        <li><a href="services.html">Our Services</a></li>
+                        <li><a href="catalog.php">Plan Your Trip</a></li>
+                  <li><a href="index.html" class="logo"></a></li>
+                  
+                  <li><a href="story.html">Our Story</a> </li>
+                  <li><a href="contact.html">Contact Us</a></li>
+                </ul>
+                
+                  <div class="user-icon">
+                        <a href="login.php"><i class="fa fa-user" style="font-size:36px; color:white;"></i></a>
+                  </div>
+
+                   </nav><br><h1 class=my-5>Here are your previous trips!</h1>';
 
         //check to see if the emails match
         $count = 0;
@@ -38,7 +51,7 @@
         }
         }
        if($count==0){
-            echo "You have no records with us. Plan a trip today!<br>";
+            echo 'You have no records with us. <a href="catalog.php">Plan a trip today!</a>';
         }
     ?>
  
@@ -47,9 +60,11 @@
 <head>
     <meta charset="UTF-8">
     <title>Account</title>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+     <link href="style.css" rel="stylesheet" type="text/css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=PT-Serif">
     <style>
-        body{ font: 14px sans-serif; text-align: center; }
+        body{text-align: center; }
     </style>
 </head>
 <body>
