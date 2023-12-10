@@ -7,7 +7,7 @@ if(isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true){
     header("location: account.php");
     exit;
 }
- 
+
 // Include config file
 require_once "config.php";
  
@@ -93,16 +93,62 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
 <head>
     <meta charset="UTF-8">
     <title>Login</title>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link href="style.css" rel="stylesheet" type="text/css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=PT-Serif">
     <style>
-        body{ font: 14px sans-serif; }
-        .wrapper{ width: 360px; padding: 20px; }
+        .btn{
+          display: inline-block;
+          align-content: center;
+          text-align: center;
+          background-color: #79adc0;
+          color: rgb(255, 255, 255);
+          font-size: 22px;
+          font-weight: 800;
+          padding: 10px;
+          border-radius: 20px;
+          /* Adding rounded corners */
+          border: none;
+          cursor: pointer;
+          transition: transform 0.3s, background-color 0.3s;
+          /* Adding transition for smooth hover effect */
+      }
+      /* Hover effect */
+      .btn:hover {
+        background-color: #4e92a6;
+        /* Change color on hover */
+        transform: scale(1.1);
+        /* Scale the button slightly on hover */
+        color: white;
+      }
     </style>
 </head>
 <body>
-    <div class="wrapper">
-        <h2>Login</h2>
-        <p>Please fill in your credentials to login.</p>
+<?php
+//printing out basic html first
+echo '<nav class="navbar">
+    <ul class="nav-links">
+            <li><a href="services.html">Our Services</a></li>
+            <li><a href="catalog.php">Plan Your Trip</a></li>
+        <li><a href="index.html" class="logo"></a></li>
+        
+        <li><a href="story.html">Our Story</a> </li>
+        <li><a href="contact.html">Contact Us</a></li>
+    </ul>
+    
+        <div class="user-icon">
+            <a href="login.php"><i class="fa fa-user" style="font-size:36px; color:white;"></i></a>
+        </div>
+
+        </nav>';
+?>
+<header class="hero-section">
+    <!-- Image spanning the entire page -->
+    <img
+      src="images/login-bg.jpg"
+      alt="Hero Image">
+    <div class="hero-text">Login
+        <p style="font-size:16px;">Please fill in your credentials to login.</p>
 
         <?php 
         if(!empty($login_err)){
@@ -112,20 +158,21 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
 
         <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
             <div class="form-group">
-                <label>Email</label>
-                <input type="text" name="username" class="form-control <?php echo (!empty($username_err)) ? 'is-invalid' : ''; ?>" value="<?php echo $username; ?>">
-                <span class="invalid-feedback"><?php echo $username_err; ?></span>
+                <label style="font-size:30px;">Email</label>
+                <input type="text" style="padding:5px;" name="username" class="form-control <?php echo (!empty($username_err)) ? 'is-invalid' : ''; ?>" value="<?php echo $username; ?>">
+                <span style="font-size:16px;" class="invalid-feedback"><?php echo $username_err; ?></span>
             </div>    
             <div class="form-group">
-                <label>Password</label>
-                <input type="password" name="password" class="form-control <?php echo (!empty($password_err)) ? 'is-invalid' : ''; ?>">
-                <span class="invalid-feedback"><?php echo $password_err; ?></span>
+                <label style="font-size:30px;">Password</label>
+                <input type="password" style="padding:5px;" name="password" class="form-control <?php echo (!empty($password_err)) ? 'is-invalid' : ''; ?>">
+                <span style="font-size:16px;" class="invalid-feedback"><?php echo $password_err; ?></span>
             </div>
             <div class="form-group">
-                <input type="submit" class="btn btn-primary" value="Login">
+                <input type="submit" class="btn" value="Login">
             </div>
-            <p>Don't have an account? <a href="register.php">Sign up now</a>.</p>
+            <p style="font-size:30px;">Don't have an account? <a href="register.php">Sign up now</a>.</p>
         </form>
     </div>
+  </header>
 </body>
 </html>
