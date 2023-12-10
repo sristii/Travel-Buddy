@@ -50,20 +50,22 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST'){
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Build Your Trip</title>
+    <link href="style.css" rel="stylesheet" type="text/css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=PT-Serif">
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.7.1.slim.js" integrity="sha256-UgvvN8vBkgO0luPSUl2s8TIlOSYRoGFAX4jlCIm9Adc=" crossorigin="anonymous"></script>
     <style type="text/css">
         body {
             width: 100%;
             background-color: #1C6B80;
-            font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
         }
-        h1 {
+        .page-title {
             margin-top: 50px;
             color: #FFA85C;
             text-align: center;
         }
-        h2 {
+        .all-containers h2 {
             margin: 10px 0px;
             color: #1C6B80;
             text-align: center;
@@ -151,7 +153,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST'){
             display: block;
         }
 
-        form {
+        .all-containers form {
             display: block;
             margin-bottom: 10px;
         }
@@ -171,18 +173,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST'){
             pointer-events: all;
         }
 
-        a {
+        .all-containers a {
             text-decoration: none;
         }
-        a:hover {
+        .all-containers a:hover {
             cursor: pointer;
             color: #b6a75e;
         }
-        ul {
+        .all-containers ul {
             line-height: 1.8em;
             padding-left: 0px;
         }
-        ul li {
+        .all-containers ul li {
             margin: 20px 0px;
             list-style: none;
             line-height: 1.3em;
@@ -190,7 +192,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST'){
         .place-name {
             font-weight: bold;
         }
-        b {
+        .all-containers b {
             font-family: 'Courier New', Courier, monospace;
         }
 
@@ -242,25 +244,48 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST'){
     </style>
 </head>
 <body>
-
-    <h1>Here's what we found for you!</h1><br />
+<nav class="navbar">
+    <ul class="nav-links">
+      <li><a href="services.html">Our Services</a></li>
+      <li><a href="catalog.php">Plan Your Trip</a></li>
+      <li><a href="index.html" class="logo"></a></li>
+      <li><a href="story.html">Our Story</a> </li>
+      <li><a href="contact.html">Contact Us</a></li>
+    </ul>
+    <div class="user-icon">
+      <a href="login.php"><i class="fa fa-user" style="font-size:36px; color:white;"></i></a>
+    </div>
+  </nav>
+  <div class="dropdown">
+        <button onclick="toggleDropdown()" class="dropbtn">☰ Menu</button>
+        <div id="dropdownContent" class="dropdown-content">
+          <a href="index.html">Home</a>
+          <a href="services.html">Our Services</a>
+          <a href="catalog.php">Plan Your Trip</a>
+          <a href="story.html">Our Story</a>
+          <a href="contact.html">Contact Us</a>
+          <a href="login.php">Login</a>
+        </div>
+    </div>
+    
+    <h1 class="page-title">Here's what we found for you!</h1><br />
 
     <div id="flights">
-        <div id='flight-container'>
+        <div id='flight-container' class='all-containers'>
             <h2>FLIGHTS THERE</h2>
             <div class="panes"></div>
         </div>
     </div>
 
     <div id="hotels">
-        <div id='hotel-container'>
+        <div id='hotel-container' class='all-containers'>
             <h2>HOTELS</h2>
             <div class="panes"></div>
         </div>
     </div>
 
     <h1 id="title-activities">Activities</h1>
-    <div id="cats-container">
+    <div id="cats-container" class='all-containers'>
         <div class='catResults' id='catering-container'>
             <h2>FOOD & DRINK</h2>
             <form id="catering-form" action="#" method="#">&nbsp; &nbsp;Filter results: </form>
@@ -298,6 +323,25 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST'){
         <input type="submit" id="done-submit" value="I'm done!">
     </form>
 </body>
+<footer class="footer">
+      <div class="left">
+        <!-- Contact Information -->
+        <p>Contact Us</p>
+        <p>Email: contact@travelbuddy.com</p>
+        <p>Phone: +123456789</p>
+      </div>
+      <div class="social-icons">
+        <!-- Social Media Icons -->
+        <a href="https://www.instagram.com/" class="icon instagram"><i class="fa fa-instagram"></i></a>
+        <a href="https://www.facebook.com/" class="icon facebook"><i class="fa fa-facebook"></i></a>
+      </div>
+      <div class="right">
+        <!-- Copyright Statement -->
+        <p>&copy; 2023 </p>
+        <p>Travel Buddy</p>
+        <p>All rights reserved.</p>
+      </div>
+    </footer>
 
 <script>
     const fname = <?php echo json_encode($first_name); ?>;

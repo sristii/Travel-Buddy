@@ -25,20 +25,28 @@
 
         //printing out basic html first
          echo '<nav class="navbar">
-                <ul class="nav-links">
-                        <li><a href="services.html">Our Services</a></li>
-                        <li><a href="catalog.php">Plan Your Trip</a></li>
-                  <li><a href="index.html" class="logo"></a></li>
-                  
-                  <li><a href="story.html">Our Story</a> </li>
-                  <li><a href="contact.html">Contact Us</a></li>
-                </ul>
-                
-                  <div class="user-icon">
-                        <a href="login.php"><i class="fa fa-user" style="font-size:36px; color:white;"></i></a>
-                  </div>
-
-                   </nav>
+    <ul class="nav-links">
+      <li><a href="services.html">Our Services</a></li>
+      <li><a href="catalog.php">Plan Your Trip</a></li>
+      <li><a href="index.html" class="logo"></a></li>
+      <li><a href="story.html">Our Story</a> </li>
+      <li><a href="contact.html">Contact Us</a></li>
+    </ul>
+    <div class="user-icon">
+      <a href="login.php"><i class="fa fa-user" style="font-size:36px; color:white;"></i></a>
+    </div>
+  </nav>
+  <div class="dropdown">
+        <button onclick="toggleDropdown()" class="dropbtn">☰ Menu</button>
+        <div id="dropdownContent" class="dropdown-content">
+          <a href="index.html">Home</a>
+          <a href="services.html">Our Services</a>
+          <a href="catalog.php">Plan Your Trip</a>
+          <a href="story.html">Our Story</a>
+          <a href="contact.html">Contact Us</a>
+          <a href="login.php">Login</a>
+        </div>
+    </div>
                    <header class="hero-section">
                     <img
                     src="images/login-bg.jpg"
@@ -87,14 +95,13 @@
         body {
             width: 100%;
             background-color: #1C6B80;
-            font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
         }
-        h1 {
+        #cats-container h1 {
             margin-top: 50px;
             color: #FFA85C;
             text-align: center;
         }
-        h2 {
+        #cats-container h2 {
             margin: 10px 0px;
             color: #1C6B80;
             text-align: center;
@@ -182,18 +189,18 @@
             pointer-events: all;
         }
 
-        a {
+        #cats-container a {
             text-decoration: none;
         }
-        a:hover {
+        #cats-container a:hover {
             cursor: pointer;
             color: #b6a75e;
         }
-        ul {
+        #cats-container ul {
             line-height: 1.8em;
             padding-left: 0px;
         }
-        ul li {
+        #cats-container ul li {
             margin: 20px 0px;
             list-style: none;
             line-height: 1.3em;
@@ -201,7 +208,7 @@
         .place-name {
             font-weight: bold;
         }
-        b {
+        #cats-container b {
             font-family: 'Courier New', Courier, monospace;
         }
 
