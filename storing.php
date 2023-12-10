@@ -104,10 +104,11 @@
     $last_name = $_REQUEST['last'];
     $email = $_REQUEST['email'];
     $card = $_REQUEST['cnum'];
+    $package = $_REQUEST['package'];
 
     // Performing insert query execution
     $sql = "INSERT INTO users  VALUES ('$first_name', 
-            '$last_name','$email','$card')";
+            '$last_name','$email','$card', '$package')";
          
     if(mysqli_query($conn, $sql)){
         echo "Thank you ". $first_name . " for your purchase! Would you like to create an account?<br>
