@@ -411,6 +411,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST'){
                 let allHotelsHtml = "";
                 for(let i = 0; i < numHotels; i++){
                     const currHotel = hotelsList[i];
+
+                    if (!currHotel.name) {
+                        continue;
+                    }
+
                     const address = currHotel.location.address;
 
                     let hotelHtml = `<div class='place-info'><ul><li class='place-name'>${currHotel.name}</li><li>Average rating (${currHotel.totalReviewCount} reviews): ${currHotel.overallGuestRating}</li><li>Minimum available price: ${currHotel.ratesSummary.minCurrencyCode + currHotel.ratesSummary.minPrice}</li><li>📍 ${address.addressLine1}, ${address.cityName}, ${address.countryName} ${address.zip}</li>`;
@@ -943,6 +948,3 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST'){
         });
  </script>
 </html>
-
-
-<!-- TODO: TypeError: currHotel.location is undefined -->
