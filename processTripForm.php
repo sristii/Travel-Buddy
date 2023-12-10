@@ -206,6 +206,32 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST'){
             font-size: 16px;
             text-align: center;
         }
+
+        .heartBtn {
+            background-color: #BAD5DE;
+            display: inline-block;
+            padding: 2px 20px;
+            cursor: pointer;
+            color: black;
+            text-align: center;
+        }
+
+        /* .heartBtn:hover {
+            background-color: pink;
+        }
+
+        .liked:hover {
+            background-color: pink;
+        } */
+
+        #done-submit {
+            background-color: black; 
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
     </style>
 </head>
 <body>
@@ -260,6 +286,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST'){
             <div class="panes"></div>
         </div> -->
     </div>
+
+    <form id="done-form" action="#" method="#">
+        <input type="submit" id="done-submit" value="I'm done!">
+    </form>
 </body>
 
 <script>
@@ -316,7 +346,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST'){
              search_type: 'CITY'
          },
          headers: {
-             'X-RapidAPI-Key': 'a00b02125bmsh74e9e69d3c19c41p1583d3jsn618c1d6b72d1',
+             'X-RapidAPI-Key': '279c854fdbmsheb57c9c292c7a83p14f3e9jsn01a09f1170f4',
              'X-RapidAPI-Host': 'priceline-com-provider.p.rapidapi.com'
          }
          };
@@ -350,7 +380,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST'){
                  date_checkin: checkIn,
              },
              headers: {
-                'X-RapidAPI-Key': 'a00b02125bmsh74e9e69d3c19c41p1583d3jsn618c1d6b72d1',
+                'X-RapidAPI-Key': '279c854fdbmsheb57c9c292c7a83p14f3e9jsn01a09f1170f4',
                 'X-RapidAPI-Host': 'priceline-com-provider.p.rapidapi.com'
              }
         };
@@ -375,9 +405,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST'){
                         <li class='place-name'>Hotel Name: ${currHotel.name}</li>
                         <li>Average rating (out of ${currHotel.totalReviewCount}): ${currHotel.overallGuestRating}</li>
                         <li>Minimum available price: ${currHotel.ratesSummary.minCurrencyCode + currHotel.ratesSummary.minPrice}</li>
-                        <li>📍 ${address.addressLine1}, ${address.cityName}, ${address.countryName} ${address.zip}</li>
-                        <li><img src= "${currHotel.media.url}" width="250px"></li>
-                        </ul></div>`;
+                        <li>📍 ${address.addressLine1}, ${address.cityName}, ${address.countryName} ${address.zip}</li>`;
+
+                    if (currHotel.media) {
+                        hotelsInfo += `<li><img src= "${currHotel.media.url}" width="250px"></li>`;
+                    }
+                        
+                    hotelsInfo += "</ul></div>";
                 }
 
                 $(`#hotel-container .panes`).html(hotelsInfo); 
@@ -395,7 +429,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST'){
                 name: city, 
             },
             headers: {
-                'X-RapidAPI-Key': 'a00b02125bmsh74e9e69d3c19c41p1583d3jsn618c1d6b72d1',
+                'X-RapidAPI-Key': '279c854fdbmsheb57c9c292c7a83p14f3e9jsn01a09f1170f4',
                 'X-RapidAPI-Host': 'priceline-com-provider.p.rapidapi.com'
             },
         };  
@@ -431,7 +465,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST'){
                 duration_max: '3000'
             },
             headers: {
-                'X-RapidAPI-Key':'a00b02125bmsh74e9e69d3c19c41p1583d3jsn618c1d6b72d1',
+                'X-RapidAPI-Key':'279c854fdbmsheb57c9c292c7a83p14f3e9jsn01a09f1170f4',
                 'X-RapidAPI-Host': 'priceline-com-provider.p.rapidapi.com'
             }
             };
@@ -535,6 +569,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST'){
         const dietRestrictions = <?php echo json_encode($diet); ?>;
         const allCategories = <?php echo json_encode($catsWanted); ?>;
 
+        var heartId = 0;
+        var allData = {
+            flight: [],
+            hotel: [],
+            activity: []
+        };
+
         // console.log("city:" + cityName);
         // console.log("wheelchair: " + wheelchair + ", wifi: " + wifi);
 
@@ -558,10 +599,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST'){
             text = text.replace(/_/g, ' ');
             capitalized = text[0].toUpperCase() + text.slice(1);
 
-            const html = `<div class="tag-container">
-                            <img src="images/tag-icon.png" alt="grey tag with text">
-                            <div class="tag-text">${capitalized}</div>
-                            </div>`;
+            const html = `<div class="tag-container"><img src="images/tag-icon.png" alt="grey tag with text"><div class="tag-text">${capitalized}</div></div>`;
 
             return html;
         }
@@ -572,6 +610,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST'){
 
         function makeChkBox(name, id, val) {
             return `<input type="checkbox" name="${name}" id="${id}" value="${val}" />`;
+        }
+
+        function hiddenField($name, $val) {
+            return "<input type='hidden' name='$name' value='$val'/>";
         }
 
         function makeFilter(classname, id, val) {
@@ -679,11 +721,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST'){
                         }
 
                         const tagsHTML = matchingTags.map(makeTag).join('');
-                        let list = `<ul>
-                            <li class='tags'>${tagsHTML}</li>
-                            <li class='place-name'>${info.name}</li>
-                            <li>${metersToKm(info.distance)} km away</li>
-                            <li>${formatAddress(info.formatted)}</li>`; // this is the full address
+                        let list = `<div class='place-info'><ul><li class='tags'>${tagsHTML}</li><li class='place-name'>${info.name}</li><li>${metersToKm(info.distance)} km away</li><li>${formatAddress(info.formatted)}</li>`; // this is the full address
 
                         const moreinfo = info.datasource.raw;
 
@@ -692,13 +730,21 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST'){
                                 list += `<li>${formatbasicFields(key, moreinfo[key])}</li>`;
                             }
                         }
-                        
-                        list += "</ul>";
-                        dataHTML += "<div class='place-info'>" + list + "</div>";
+
+                        allData.activity.push({
+                            id: `heart${heartId}`, 
+                            content: $('<div/>').text(list + "</ul></div>").html()
+                        });
+
+                        list += `<div id="heart${heartId}" class="heartBtn">Save</div>`;
+                        list += "</ul></div>";
+                        heartId += 1;
+
+                        dataHTML += list;
                     }
 
                     // no results found
-                    if (dataHTML === "") {
+                    if (dataHTML == "") {
                         dataHTML = "We couldn't find any matching results.";
                     }
 
@@ -735,7 +781,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST'){
                 event.preventDefault();
 
                 button.toggleClass('on');
-                button.css('background-color', button.hasClass('on') ? 'beige' : 'white');
+                button.css('background-color', button.hasClass('on') ? '#FFDEC2' : 'white');
 
                 // check which categories have been selected
                 const categories = [];
@@ -802,5 +848,58 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST'){
                 loadCategory("cultural", Object.keys(culturalTags), Object.values(culturalTags), [], coordinates);
             }
         }
+
+        $(document).on('click', '.heartBtn', function(event) {
+            event.preventDefault();
+
+            $(this).toggleClass('liked');
+
+            if ($(this).hasClass('liked')) {
+                $(this).css("background-color", "pink");
+            } else {
+                $(this).css("background-color", "#BAD5DE");
+            }
+        });
+
+        // $('.heartBtn').hover(
+        //     function() {
+        //         if ($(this).css("background-color") == "#BAD5DE") {
+        //             $(this).css("background-color", "pink");
+        //         } else {
+        //             $(this).css("background-color", "#BAD5DE");
+        //         }
+        //     },
+        //     function() {
+        //         if ($(this).css("background-color") == "#BAD5DE") {
+        //             $(this).css("background-color", "pink");
+        //         } else {
+        //             $(this).css("background-color", "#BAD5DE");
+        //         }
+        //     }
+        // );
+
+        $(document).ready(function() {
+            $('#done-form').submit(function(event) {
+                event.preventDefault();
+
+                console.log(allData);
+
+                for (const category in allData) {
+
+                    allData[category].forEach(function(obj) {
+                        const id = obj.id;
+                        const content = obj.content;
+
+                        // console.log(decodeURIComponent(content));
+
+                        // check if the element with that id has class 'liked'
+                        if ($(`#${id}`).hasClass('liked')) {
+                            console.log(id + " was liked");
+                            // $('#done-form').append(`<input type="hidden" name="${id}" value="${content}">`);
+                        }
+                    });
+                }
+            });
+        });
  </script>
 </html>
