@@ -49,12 +49,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST'){
     <style type="text/css">
         body {
             width: 100%;
-            background-color: white;
+            background-color: #1C6B80;
             font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
         }
         h1 {
             margin-top: 50px;
-            color: black;
+            color: #FFA85C;
             text-align: center;
         }
         h2 {
@@ -75,6 +75,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST'){
             width: 100%;
             padding: 10px 0px 30px 0px;
             margin: 0px;
+            margin-bottom: 80px;
             display: none; /* not shown unless user chose the category in the form */
         }
         .catResults input[type='button'] {
@@ -99,19 +100,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST'){
             height: 400px;
         }
         #catering-container {
-            background-color: #ffdbad;
+            background-color: #79ADC0;
         }
         #commercial-container {
-            background-color: #e3c7cc;
+            background-color: #79ADC0;
         }
         #natural-container {
-            background-color:#CED097;
+            background-color:#79ADC0;
         }
         #cultural-container {
-            background-color: #E5BC9F;
+            background-color: #79ADC0;
         }
         #entertain-container {
-            background-color: #bbd8b3ff;
+            background-color: #79ADC0;
         }
         /* hotels */
         #hotels {
@@ -121,11 +122,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST'){
             padding: 0px;
         }
         #hotel-container {
-            background-color: grey;
+            background-color: #79ADC0;
             width: 100%;
             padding: 10px 0px 30px 0px;
             margin: 0px;
             display: block;
+            margin-bottom: 80px;
         }
         /* flights */
         #flights {
@@ -135,10 +137,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST'){
             padding: 0px;
         }
         #flight-container {
-            background-color: grey;
+            background-color: #79ADC0;
             width: 100%;
             padding: 10px 0px 30px 0px;
             margin: 0px;
+            margin-bottom: 80px;
             display: block;
         }
 
@@ -152,6 +155,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST'){
             display: block;
             font-size: 18px;
             padding: 10px;
+            border-radius: 5px;
             line-height: 1.5em;
             margin: 6px;
             width: 300px;
@@ -206,43 +210,45 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST'){
 </head>
 <body>
 
-    <h1>Here's what we found for you!</h1>
+    <h1>Here's what we found for you!</h1><br />
 
     <div id="flights">
         <div id='flight-container'>
+            <h2>FLIGHTS THERE</h2>
             <div class="panes"></div>
         </div>
     </div>
 
     <div id="hotels">
         <div id='hotel-container'>
+            <h2>HOTELS</h2>
             <div class="panes"></div>
         </div>
     </div>
 
-    <h1>ACTIVITIES TO DO</h1>
+    <h1>Activities</h1>
     <div id="cats-container">
         <div class='catResults' id='catering-container'>
-            <h2>Food</h2>
-            <form id="catering-form" action="#" method="#">Filter results: </form>
-            <div class="panes"></div>
-        </div>
-
-        <div class='catResults' id='commercial-container'>
-            <h2>Commercial</h2>
-            <form id="commercial-form" action="#" method="#">Filter results: </form>
+            <h2>FOOD & DRINK</h2>
+            <form id="catering-form" action="#" method="#">&nbsp; &nbsp;Filter results: </form>
             <div class="panes"></div>
         </div>
 
         <div class='catResults' id='cultural-container'>
-            <h2>Tourism</h2>
-            <form id="cultural-form" action="#" method="#">Filter results: </form>
+            <h2>CLASSIC TOURISM</h2>
+            <form id="cultural-form" action="#" method="#">&nbsp; &nbsp;Filter results: </form>
+            <div class="panes"></div>
+        </div>
+
+        <div class='catResults' id='commercial-container'>
+            <h2>SHOPPING</h2>
+            <form id="commercial-form" action="#" method="#">&nbsp; &nbsp;Filter results: </form>
             <div class="panes"></div>
         </div>
 
         <div class='catResults' id='natural-container'>
-            <h2>Nature</h2>
-            <form id="natural-form" action="#" method="#">Filter results: </form>
+            <h2>NATURE</h2>
+            <form id="natural-form" action="#" method="#">&nbsp; &nbsp;Filter results: </form>
             <div class="panes"></div>
         </div>
         
@@ -269,6 +275,34 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST'){
         var departCity = await getLocation(<?php echo json_encode($originCity); ?>);
         var arriveCity = await getLocation(cityName);
         searchFlights(departCity, arriveCity);
+    }
+
+    /**
+     * formats the given amount as a currency string.
+     * 
+     * @param {number} amount - a numeric amount to display as currency.
+     * @throws - will throw type error if amount is not a number.
+     * @return {string} - amount padded with up to 2 trailing zeros.
+     */
+    function currencyStr(amount) {
+        if (typeof amount !== "number") {
+            throw new TypeError("amount cannot be formatted as currency");
+        }
+
+        // round to 2 decimal places
+        let rounded = Math.round(amount * 100) / 100;
+        
+        // if whole number, add two trailing zeros
+        if (Math.round(amount) - rounded === 0) {
+            rounded += ".00";
+        } else { // if only one decimal place (eg, 2.5), add a trailing 0
+            rounded += "";
+            if (rounded.split(".")[1].length === 1) {
+                rounded += "0";
+            }
+        }
+
+        return rounded;
     }
 
     async function hotelCity() {
@@ -332,16 +366,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST'){
             } else {
                 const numHotels = Math.min(hotelsList.length, 5);
 
-                let hotelsInfo = "<h2>HOTELS:</h2>";
+                let hotelsInfo = "";
                 for(let i = 0; i < numHotels; i++){
                     const currHotel = hotelsList[i];
                     const address = currHotel.location.address;
 
                     hotelsInfo += `<div class='place-info'><ul>
                         <li class='place-name'>Hotel Name: ${currHotel.name}</li>
-                        <li>Average guest ratings (out of ${currHotel.totalReviewCount} reviews): ${currHotel.overallGuestRating}</li>
+                        <li>Average rating (out of ${currHotel.totalReviewCount}): ${currHotel.overallGuestRating}</li>
                         <li>Minimum available price: ${currHotel.ratesSummary.minCurrencyCode + currHotel.ratesSummary.minPrice}</li>
-                        <li>Address: ${address.addressLine1}, ${address.cityName}, ${address.countryName} ${address.zip}</li>
+                        <li>📍 ${address.addressLine1}, ${address.cityName}, ${address.countryName} ${address.zip}</li>
                         <li><img src= "${currHotel.media.url}" width="250px"></li>
                         </ul></div>`;
                 }
@@ -351,7 +385,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST'){
         } catch (error) {
             console.error(error);
         }
-
     }
 
     async function getLocation(city) {
@@ -373,6 +406,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST'){
             console.error(error);
         }
     }
+
     async function searchFlights(depart, arrive) {
     // Get form data
     const departDate = <?php echo json_encode($departDate); ?>;
@@ -409,13 +443,21 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST'){
                     $("#flight-container .panes").html("No flight availability on those dates. Try adjusting the dates or where you're flying from.");
                 }
                 else {
-                    let flightsInfo = "<h2>FLIGHTS:</h2>";
-                    const numFlights = Math.min(3, response.data.listings.length);
+                    let flightsInfo = "";
+                    const numFlights = Math.min(4, response.data.listings.length);
 
                     for (let i = 0; i < numFlights; i++){
                         const flightEntry = response.data.listings[i];
                         const segments = flightEntry.slices[0].segments;
-                        var dTime = new Date(segments[0].departInfo.time.dateTime);
+                        const dTime = new Date(segments[0].departInfo.time.dateTime);
+                        const formattedTime = dTime.toLocaleString('en-US', {
+                            year: 'numeric',
+                            month: 'short',
+                            day: '2-digit',
+                            hour: '2-digit',
+                            minute: '2-digit',
+                            timeZoneName: 'short'
+                        });
 
                         console.log(flightEntry);
 
@@ -423,9 +465,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST'){
                         <li class='place-name'>Airline: ${flightEntry.airlines[0].name}</li>
                         <li>Seat type: ${flightEntry.allFareBrandNames}</li>
                         <li>Seats available: ${flightEntry.seatsAvailable}</li>
-                        <li>Price: $${flightEntry.totalPriceWithDecimal.price}</li>
+                        <li>Price: USD${currencyStr(flightEntry.totalPriceWithDecimal.price)}</li>
                         <li>Layovers: ${segments.length - 1}</li>
-                        <li>Departure information: ${segments[0].departInfo.airport.name} at ${dTime}</li>
+                        <li>Departure: ${segments[0].departInfo.airport.name} at ${formattedTime}</li>
                         </ul></div>`;
                     }
 
