@@ -1,9 +1,9 @@
 <?php
-    $first_name =  $_REQUEST['first'];
-    $last_name = $_REQUEST['last'];
-    $email = $_REQUEST['email'];
-    $card = $_REQUEST['cnum'];
-    $package = $_REQUEST['package'];
+    $first_name = $_POST['first'];
+    $last_name = $_POST['last'];
+    $email = $_POST['email'];
+    $card = $_POST['cnum'];
+    $package = $_POST['package'];
 ?>
 
 <!DOCTYPE html>
@@ -112,7 +112,7 @@
             <label for="chkCommercial">Shopping and Spending</label><br />
 
             <input type="checkbox" id="chkFood" name="activity[]" value="catering">
-            <label for="chkFood">Food and Drink</label><br />
+            <label id="foodLabel" for="chkFood">Food and Drink</label><br />
 
             <input type="checkbox" id="chkAll">
             <label for="chkAll">All the above</label><br />
@@ -146,6 +146,21 @@
 </body>
 
 <script>
+    const fname = <?php echo json_encode($first_name); ?>;
+    const lname = <?php echo json_encode($last_name); ?>;
+    const email = <?php echo json_encode($email); ?>;
+    const card = <?php echo json_encode($card); ?>;
+    // const package = <?php echo json_encode($package); ?>;
+    // console.log("package" + package); // TODO package is null
+
+    const package = "basic";
+    if (package == "basic") {
+        $("#activity-questions").hide();
+    } else if (package == "gold") {
+        $("#chkFood").hide();
+        $("#foodLabel").hide();
+    }
+
     // if the "All the above" checkbox is clicked, check all the other activities checkboxes.
     $('#chkAll').on('click', function() {
         $('input[name="activity[]"]').prop('checked', this.checked);
@@ -196,20 +211,14 @@
         }
 
         $(".input-err").html("");
-
-        const fname = <?php echo json_encode($first_name); ?>;
-    const lname = <?php echo json_encode($last_name); ?>;
-    const email = <?php echo json_encode($email); ?>;
-    const card = <?php echo json_encode($card); ?>;
-    const package = <?php echo json_encode($package); ?>;
     
-    let hiddenInfo = `<input type='hidden' name='fname' value='${fname}'/>`
-    + `<input type='hidden' name='lname' value='${lname}'/>`
-    + `<input type='hidden' name='email' value='${email}'/>`
-    + `<input type='hidden' name='card' value='${card}'/>`
-    + `<input type='hidden' name='package' value='${package}'/>`;
+        const hiddenInfo = `<input type='hidden' name='fname' value='${fname}'/>`
+        + `<input type='hidden' name='lname' value='${lname}'/>`
+        + `<input type='hidden' name='email' value='${email}'/>`
+        + `<input type='hidden' name='card' value='${card}'/>`
+        + `<input type='hidden' name='package' value='${package}'/>`;
 
-    $("#general-form").append(hiddenInfo);
+        $("#general-form").append(hiddenInfo);
     
         return true;
     }

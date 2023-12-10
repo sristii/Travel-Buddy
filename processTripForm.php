@@ -161,6 +161,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST'){
             display: block;
             font-size: 18px;
             padding: 10px;
+            padding-bottom: 0px;
             border-radius: 5px;
             line-height: 1.5em;
             margin: 6px;
@@ -407,25 +408,32 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST'){
             } else {
                 const numHotels = Math.min(hotelsList.length, 5);
 
-                let hotelsInfo = "";
+                let allHotelsHtml = "";
                 for(let i = 0; i < numHotels; i++){
                     const currHotel = hotelsList[i];
                     const address = currHotel.location.address;
 
-                    hotelsInfo += `<div class='place-info'><ul>
-                        <li class='place-name'>Hotel Name: ${currHotel.name}</li>
-                        <li>Average rating (out of ${currHotel.totalReviewCount}): ${currHotel.overallGuestRating}</li>
-                        <li>Minimum available price: ${currHotel.ratesSummary.minCurrencyCode + currHotel.ratesSummary.minPrice}</li>
-                        <li>📍 ${address.addressLine1}, ${address.cityName}, ${address.countryName} ${address.zip}</li>`;
+                    let hotelHtml = `<div class='place-info'><ul><li class='place-name'>${currHotel.name}</li><li>Average rating (${currHotel.totalReviewCount} reviews): ${currHotel.overallGuestRating}</li><li>Minimum available price: ${currHotel.ratesSummary.minCurrencyCode + currHotel.ratesSummary.minPrice}</li><li>📍 ${address.addressLine1}, ${address.cityName}, ${address.countryName} ${address.zip}</li>`;
 
                     if (currHotel.media) {
-                        hotelsInfo += `<li><img src= "${currHotel.media.url}" width="250px"></li>`;
+                        hotelHtml += `<li><img src='${currHotel.media.url}' width='250px'></li>`;
                     }
-                        
-                    hotelsInfo += "</ul></div>";
+
+                    const saveId = heartId;
+                    heartId += 1;
+
+                    allData.hotel.push({
+                        id: `heart${saveId}`, 
+                        content: $('<div/>').text(hotelHtml + "</ul></div>").html()
+                    });
+
+                    hotelHtml += `<div id="heart${saveId}" class="heartBtn">Save</div>`;
+                    hotelHtml += "</ul></div>";
+
+                    allHotelsHtml += hotelHtml;
                 }
 
-                $(`#hotel-container .panes`).html(hotelsInfo); 
+                $(`#hotel-container .panes`).html(allHotelsHtml); 
             }            
         } catch (error) {
             console.error(error);
@@ -453,11 +461,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST'){
     }
 
     async function searchFlights(depart, arrive) {
-    // Get form data
-    const departDate = <?php echo json_encode($departDate); ?>;
-    const returnDate =  <?php echo json_encode($returnDate); ?>;
+        // Get form data
+        const departDate = <?php echo json_encode($departDate); ?>;
+        const returnDate =  <?php echo json_encode($returnDate); ?>;
 
-      const options = {
+        const options = {
             method: 'GET',
             url: 'https://priceline-com-provider.p.rapidapi.com/community/v1/flights/search',
             params: {
@@ -488,7 +496,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST'){
                     $("#flight-container .panes").html("No flight availability on those dates. Try adjusting the dates or where you're flying from.");
                 }
                 else {
-                    let flightsInfo = "";
+                    let allFlightsHtml = "";
                     const numFlights = Math.min(4, response.data.listings.length);
 
                     for (let i = 0; i < numFlights; i++){
@@ -506,17 +514,23 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST'){
 
                         console.log(flightEntry);
 
-                        flightsInfo += `<div class='place-info'><ul>
-                        <li class='place-name'>Airline: ${flightEntry.airlines[0].name}</li>
-                        <li>Seat type: ${flightEntry.allFareBrandNames}</li>
-                        <li>Seats available: ${flightEntry.seatsAvailable}</li>
-                        <li>Price: USD${currencyStr(flightEntry.totalPriceWithDecimal.price)}</li>
-                        <li>Layovers: ${segments.length - 1}</li>
-                        <li>Departure: ${segments[0].departInfo.airport.name} at ${formattedTime}</li>
-                        </ul></div>`;
+                        let flightHtml = `<div class='place-info'><ul><li class='place-name'>Airline: ${flightEntry.airlines[0].name}</li><li>Seat type: ${flightEntry.allFareBrandNames}</li><li>Seats available: ${flightEntry.seatsAvailable}</li><li>Price: USD${currencyStr(flightEntry.totalPriceWithDecimal.price)}</li><li>Layovers: ${segments.length - 1}</li><li>Departure: ${segments[0].departInfo.airport.name} at ${formattedTime}</li>`;
+
+                        const saveId = heartId;
+                        heartId += 1;
+
+                        allData.flight.push({
+                            id: `heart${saveId}`, 
+                            content: $('<div/>').text(flightHtml + "</ul></div>").html()
+                        });
+
+                        flightHtml += `<div id="heart${saveId}" class="heartBtn">Save</div>`;
+                        flightHtml += "</ul></div>";
+
+                        allFlightsHtml += flightHtml;
                     }
 
-                    $(`#flight-container .panes`).html(flightsInfo); 
+                    $(`#flight-container .panes`).html(allFlightsHtml); 
                 }                
             } catch (error) {
                 console.error(error);
@@ -553,7 +567,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST'){
             "natural.forest": "Forest",
             "natural.water": "Water",
             "natural.mountain": "Mountain",
-            "camping": "Camping Site",
             "leisure.park": "Park",
             // "natural": "Any nature"
         };
@@ -610,25 +623,21 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST'){
             text = text.replace(/_/g, ' ');
             capitalized = text[0].toUpperCase() + text.slice(1);
 
-            const html = `<div class="tag-container"><img src="images/tag-icon.png" alt="grey tag with text"><div class="tag-text">${capitalized}</div></div>`;
+            const html = `<div class='tag-container'><img src='images/tag-icon.png' alt='grey tag with text'><div class='tag-text'>${capitalized}</div></div>`;
 
             return html;
         }
 
         function makeLink(classname, url, text) {
-            return `<a href="${url}" class="${classname}">${text}</a>`;
+            return `<a href='${url}' class='${classname}'>${text}</a>`;
         }
 
         function makeChkBox(name, id, val) {
-            return `<input type="checkbox" name="${name}" id="${id}" value="${val}" />`;
+            return `<input type='checkbox' name='${name}' id='${id}' value='${val}' />`;
         }
 
-        // function hiddenField($name, $val) {
-        //     return "<input type='hidden' name='$name' value='$val'/>";
-        // }
-
         function makeFilter(classname, id, val) {
-            return `<input type="button" value="${val}" class="${classname}" id="${id}" />`;
+            return `<input type='button' value='${val}' class='${classname}' id='${id}' />`;
         }
 
         function formatWebsite(url) {
@@ -690,8 +699,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST'){
             if (wifi !== "") {
                 conditions.push(wifi);
             }
-            console.log("conditions:");
-            console.log(conditions);
 
             const conditionStr = conditions.length == 0 ? "" : `&conditions=${ conditions.join("%2C") }`;
             const catStr = categories.join("%2C");
@@ -742,14 +749,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST'){
                             }
                         }
 
+                        const saveId = heartId;
+                        heartId += 1;
+
                         allData.activity.push({
-                            id: `heart${heartId}`, 
+                            id: `heart${saveId}`, 
                             content: $('<div/>').text(list + "</ul></div>").html()
                         });
 
-                        list += `<div id="heart${heartId}" class="heartBtn">Save</div>`;
+                        list += `<div id="heart${saveId}" class="heartBtn">Save</div>`;
                         list += "</ul></div>";
-                        heartId += 1;
 
                         dataHTML += list;
                     }
@@ -889,7 +898,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST'){
         //     }
         // );
 
-        $(document).ready(function() {            
+        $(document).ready(function() {
             let hiddenInfo = `<input type='hidden' name='fname' value='${fname}'/>`
             + `<input type='hidden' name='lname' value='${lname}'/>`
             + `<input type='hidden' name='email' value='${email}'/>`
@@ -898,24 +907,29 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST'){
 
             $("#done-form").append(hiddenInfo);
 
-
             $('#done-form').submit(function(event) {
-                // event.preventDefault();
-
                 console.log(allData);
 
                 for (const category in allData) {
-
                     allData[category].forEach(function(obj) {
                         const id = obj.id;
                         const content = obj.content;
 
-                        // console.log(decodeURIComponent(content));
-
                         // check if the element with that id has class 'liked'
                         if ($(`#${id}`).hasClass('liked')) {
-                            console.log(id + " was liked");
-                            $('#done-form').append(`<input type="hidden" name="${id}" value="${content}">`);
+                            let idNum = 0;
+
+                            // get the number from the id
+                            const match = id.match(/\d+/);
+                            if (match) {
+                                idNum = parseInt(match[0], 10);
+                            }
+                            
+                            const currName = category + idNum;
+                            console.log(currName);
+                            console.log(content);
+                        
+                            $('#done-form').append(`<input type="hidden" name="${currName}" value="${content}">`);
                         }
                     });
                 }
