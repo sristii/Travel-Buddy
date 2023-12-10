@@ -11,27 +11,35 @@
 </head>
 
 <body>
-        <nav class="navbar">
-                <ul class="nav-links">
-                        <li><a href="services.html">Our Services</a></li>
-                        <li><a href="catalog.php">Plan Your Trip</a></li>
-                  <li><a href="index.html" class="logo"></a></li>
-                  
-                  <li><a href="story.html">Our Story</a> </li>
-                  <li><a href="contact.html">Contact Us</a></li>
-                </ul>
-                
-                  <div class="user-icon">
-                        <a href="login.php"><i class="fa fa-user" style="font-size:36px; color:white;"></i></a>
-                  </div>
-
-                   </nav>
+  <nav class="navbar">
+    <ul class="nav-links">
+      <li><a href="services.html">Our Services</a></li>
+      <li><a href="catalog.php">Plan Your Trip</a></li>
+      <li><a href="index.html" class="logo"></a></li>
+      <li><a href="story.html">Our Story</a> </li>
+      <li><a href="contact.html">Contact Us</a></li>
+    </ul>
+    <div class="user-icon">
+      <a href="login.php"><i class="fa fa-user" style="font-size:36px; color:white;"></i></a>
+    </div>
+  </nav>
+  <div class="dropdown">
+        <button onclick="toggleDropdown()" class="dropbtn">☰ Menu</button>
+        <div id="dropdownContent" class="dropdown-content">
+          <a href="index.html">Home</a>
+          <a href="services.html">Our Services</a>
+          <a href="catalog.php">Plan Your Trip</a>
+          <a href="story.html">Our Story</a>
+          <a href="contact.html">Contact Us</a>
+          <a href="login.php">Login</a>
+        </div>
+</div>
 
   <header class="hero-section">
     <!-- Image spanning the entire page -->
     <img
       src="images/story-bg.jpg"
-      alt="Hero Image">
+      alt="Blue skyline image of tokyo">
     <div class="hero-text">Our Story</div>
   </header>
 
@@ -42,7 +50,7 @@
   <section class="section">
     <div class="content">
       <div class="image">
-        <img class="photos" src="images/sibling.jpg" alt="photos of cofounder siblings">
+        <img class="photos" src="images/sibling.jpg" alt="photo of cofounder siblings standing side by side with city landscape in the back">
       </div>
       <div class="text2">
         <h2>Vacation Made Easy</h2>

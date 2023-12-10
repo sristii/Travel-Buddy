@@ -8,9 +8,9 @@
     <link href="style.css" rel="stylesheet" type="text/css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=PT-Serif">
-    <style>
+  <style>
         input[type=text] {
-        width: 25%;
+        width: 80%;
         margin-bottom: 20px;
         padding: 12px;
         border: 1px solid #ccc;
@@ -27,22 +27,18 @@
           color: #ffcda1;
         }
 
-        .icon-container {
+      .icon-container {
         margin-bottom: 20px;
         padding: 7px 0;
-        font-size: 24px;
+        display: flex;
         } 
 
-        .box {
-        background-color: rgb(36, 125, 155);
-        color: white;
-        padding: 12px;
-        border: none;
-        width: 100%;
-        border-radius: 3px;
-        cursor: pointer;
-        font-size: 17px;
-        transition: transform 0.3s, background-color 0.3s;
+        .icon-container label {
+          padding: 10px;
+        }
+
+        .icon-container label {
+          padding: 10px;
         }
 
         .box:hover {
@@ -63,24 +59,143 @@
             float: left;
             width: 30%;
             padding: 20px 20px;
-            height: 500px;
+            /* height: 500px; */
             margin: 5px;
             font-size: 22px;
             border-radius: 25px;
         }
 
-        .payBox{
-            display: block;
-            text-align: center;
-            position: absolute;
-            box-sizing: border-box;
-            background-color: rgb(115, 184, 208);
-            color: rgb(255, 255, 255);
-            float: left;
-            width: 75%;
-            margin: 5px;
-            font-size: 22px;
+        @media screen and (max-width: 768px){
+            .catalog-center{
+                display: flex; 
+                flex: 1; 
+                align-items: center; 
+                flex-direction: column; 
+            }
+            .box{
+                width: 80%; 
+                margin-bottom: 50px; 
+            }
         }
+
+        .payBox {
+            display: block;
+            margin: 0 auto;
+            width: 100%;
+            max-width: 600px;
+            box-sizing: border-box;
+            background-color: aliceblue;
+            border-radius: 25px;
+            margin-top: 40px;
+        }
+        form {
+            background-color: aliceblue;
+            text-align: center;
+            border-radius: 5px;
+            padding-top: 10px;
+            display: block;
+            margin: 0 auto;
+            width: 100%;
+            max-width: 410px;
+            box-sizing: border-box;
+            
+        }
+        form h4 {
+            text-align: center;
+            font-size: 24px;
+            color: #2a3d45;
+        }
+		#error {
+            color: #496f5d;
+            margin-bottom: 80px;
+            text-align: left;
+            line-height: 1.4em;
+            height: 150px;
+        }
+		label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 700;
+        }
+		input, select, textarea {
+            margin-bottom: 12px;
+            padding: 12px;
+            font-size: 16px;
+            box-sizing: border-box;
+            border-radius: 10px;
+            border: 1px solid #b6b6b6;
+            width: 400px;
+            color: #5b5b5b;
+            font-family: 'Averia Serif Libre', serif;
+        }
+        textarea {
+            width: 400px;
+            height: 140px;
+        }
+        input[type="submit"] {
+                display: inline-block;
+        align-content: center;
+        text-align: center;
+        background-color: #79adc0;
+        color: rgb(255, 255, 255);
+        font-size: 22px;
+        font-weight: 800;
+        padding: 20px;
+        border-radius: 20px;
+        /* Adding rounded corners */
+        border: none;
+        cursor: pointer;
+        transition: transform 0.3s, background-color 0.3s;
+        }        
+        input[type="submit"]:hover {
+                background-color: #4e92a6;
+        /* Change color on hover */
+        transform: scale(1.1);
+        /* Scale the button slightly on hover */
+        color: white;
+        }
+        input[type="checkbox"] {
+            width: fit-content;
+            height: fit-content;
+        }
+        .chkbox-label {
+            color: #5b5b5b;
+            margin-left: 10px;
+        }
+        .chkboxes-container {
+            display: block;
+            margin-left: 160px;
+        }
+
+        .btns {
+          text-align: center;
+        }
+
+        .button {
+          display: inline-block;
+          align-content: center;
+          text-align: center;
+          background-color: #79adc0;
+          color: rgb(255, 255, 255);
+          font-size: 22px;
+          font-weight: 800;
+          padding: 20px;
+          border-radius: 20px;
+          border: none;
+          cursor: pointer;
+          transition: transform 0.3s, background-color 0.3s;
+        }
+
+        .button:hover {
+          background-color: #4e92a6;
+          /* Change color on hover */
+          transform: scale(1.1);
+          /* Scale the button slightly on hover */
+          color: white;
+}
+
+        
+
     </style>
     <script>
         //card validation functions from w3resources
@@ -223,32 +338,38 @@
 
 <body>
 <nav class="navbar">
-                <ul class="nav-links">
-                        <li><a href="services.html">Our Services</a></li>
-                        <li><a href="catalog.php">Plan Your Trip</a></li>
-                  <li><a href="index.html" class="logo"></a></li>
-                  
-                  <li><a href="story.html">Our Story</a> </li>
-                  <li><a href="contact.html">Contact Us</a></li>
-                </ul>
-                
-                  <div class="user-icon">
-                        <a href="login.php"><i class="fa fa-user" style="font-size:36px; color:white;"></i></a>
-                  </div>
+    <ul class="nav-links">
+      <li><a href="services.html">Our Services</a></li>
+      <li><a href="catalog.php">Plan Your Trip</a></li>
+      <li><a href="index.html" class="logo"></a></li>
+      <li><a href="story.html">Our Story</a> </li>
+      <li><a href="contact.html">Contact Us</a></li>
+    </ul>
+    <div class="user-icon">
+      <a href="login.php"><i class="fa fa-user" style="font-size:36px; color:white;"></i></a>
+    </div>
+  </nav>
+  <div class="dropdown">
+        <button onclick="toggleDropdown()" class="dropbtn">☰ Menu</button>
+        <div id="dropdownContent" class="dropdown-content">
+          <a href="index.html">Home</a>
+          <a href="services.html">Our Services</a>
+          <a href="catalog.php">Plan Your Trip</a>
+          <a href="story.html">Our Story</a>
+          <a href="contact.html">Contact Us</a>
+          <a href="login.php">Login</a>
+        </div>
+    </div>
+  
+    <header class="hero-section">
+    <img src="images/plan-bg.jpg" alt="Overhead view of a beach shore, bright blue water">
 
-                   </nav>
-
-                   <header class="hero-section">
-    <!-- Image spanning the entire page -->
-    <img
-      src="images/plan-bg.jpg"
-      alt="Hero Image">
     <div class="hero-text">Catalog</div>
   </header>
    <br>
 
     <div class="catalog-center" id="catalog">
-        <div class="box" onclick="purchase('Basic', 0)" id ="box1">
+        <div class="box" onclick="purchase('Basic', 5)" id ="box1">
             <h3>Basic Plan</h3>
             <br><br>
             With the basic plan you will get information about flights and hotels for
@@ -268,7 +389,7 @@
             <br><br><br>
             <h3>Cost: $80</h3>
         </div>
-        <div class="box" onclick="purchase('Premium', 150)" id="box3">
+        <div class="box" onclick="purchase('Premium', 120)" id="box3">
             <h3>Premium Plan</h3>
             <br><br>
             Our Premium Option provides peak user personalization and a guaranteed fun time! You will get information about flights, hotels, locations, and even 
@@ -283,18 +404,17 @@
             <div class="col-75">
               <div class="container">
                 <form action = "tripForm.php" onSubmit="return validate()" method="POST">
-                    <h3>Billing Info</h3>
+                   <br><h3>Payment Details</h3> <br>
+
                     Order Summary: 
                     <p id="packageType">Package:</p>
-                    <p id="total">Total: $</p>
-                    <h3>Billing Info</h3>
+                    <p id="total">Total: $</p><br>
                     <label>First Name* </label><input type='text' name='first' id="fname"/>
                     <label>Last Name* </label><input type='text' name='last' id="lname"/><br/>
                     <label>Email* </label><input type='text' name='email' id="email"/>
                     <label>Phone Number </label><input type='text' name='phone' id="phone" /><br/>
           
                     <div class="col-50">
-                      <h3>Payment</h3>
                       <label for="fname">Accepted Cards</label>
                       <div class="icon-container">
                         <input type="radio" id="visa" name="cardType" value="Visa">
@@ -304,15 +424,15 @@
                             <input type="radio" id="mastercard" name="cardType" value="mastercard">
                             <label for="mastercard">MasterCard</label>
                             <input type="radio" id="AE" name="cardType" value="AE">
-                            <label for="AE">American Express</label>
+                            <label for="AE">AmEx</label>
                       </div>
-                      <label for="cname">Name on Card</label>
+                      <label for="cname">Name On Card</label>
                       <input type="text" id="cname" name="cardname" >
-                      <label for="ccnum">Credit card number *</label>
+                      <label for="ccnum">Credit Card Number *</label>
                       <input type="text" name='cnum' id="cnum" ><br>
-                      <label for="expmonth">Exp Month</label>
+                      <label for="expmonth">Exp. Month</label>
                       <input type="text" id="expmonth" name="expmonth" >
-                          <label for="expyear">Exp Year</label>
+                          <label for="expyear">Exp. Year</label>
                           <input type="text" id="expyear" name="expyear" ><br>
                           <label for="cvv">CVV</label>
                           <input type="text" id="cvv" name="cvv" >
@@ -320,9 +440,12 @@
                       </div>
                     </div>
                   </div>
-                  <input type="submit" value="Checkout" class="btn">
-                  <input value="back" class="btn" onclick="back()">
+
+                  <div class="btns">
+                  <input type="submit" value="Checkout" class="button">
+                  <input value="Back" class="button" onclick="back()">
                   <div id="error">&nbsp;</div>
+                  </div>
                 </form>
               </div>
             </div>
