@@ -31,6 +31,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST'){
             }
         }
     }
+
+    $first_name = $_POST['fname'];
+    $last_name = $_POST['lname'];
+    $email = $_POST['email'];
+    $card = $_POST['card'];
+    $package = $_POST['package'];
 } else {
     // redirect if accessed directly without submitting the form
     header('Location: tripForm.html');
@@ -287,12 +293,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST'){
         </div> -->
     </div>
 
-    <form id="done-form" action="#" method="#">
+    <form id="done-form" action="showResults.php" method="POST">
         <input type="submit" id="done-submit" value="I'm done!">
     </form>
 </body>
 
 <script>
+    const fname = <?php echo json_encode($first_name); ?>;
+    const lname = <?php echo json_encode($last_name); ?>;
+    const email = <?php echo json_encode($email); ?>;
+    const card = <?php echo json_encode($card); ?>;
+    const package = <?php echo json_encode($package); ?>;
     const cityName = <?php echo json_encode($destinationCity); ?>;
 
     main(); 
@@ -612,9 +623,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST'){
             return `<input type="checkbox" name="${name}" id="${id}" value="${val}" />`;
         }
 
-        function hiddenField($name, $val) {
-            return "<input type='hidden' name='$name' value='$val'/>";
-        }
+        // function hiddenField($name, $val) {
+        //     return "<input type='hidden' name='$name' value='$val'/>";
+        // }
 
         function makeFilter(classname, id, val) {
             return `<input type="button" value="${val}" class="${classname}" id="${id}" />`;
@@ -878,9 +889,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST'){
         //     }
         // );
 
-        $(document).ready(function() {
+        $(document).ready(function() {            
+            let hiddenInfo = `<input type='hidden' name='fname' value='${fname}'/>`
+            + `<input type='hidden' name='lname' value='${lname}'/>`
+            + `<input type='hidden' name='email' value='${email}'/>`
+            + `<input type='hidden' name='card' value='${card}'/>`
+            + `<input type='hidden' name='package' value='${package}'/>`;
+
+            $("#done-form").append(hiddenInfo);
+
+
             $('#done-form').submit(function(event) {
-                event.preventDefault();
+                // event.preventDefault();
 
                 console.log(allData);
 
@@ -895,11 +915,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST'){
                         // check if the element with that id has class 'liked'
                         if ($(`#${id}`).hasClass('liked')) {
                             console.log(id + " was liked");
-                            // $('#done-form').append(`<input type="hidden" name="${id}" value="${content}">`);
+                            $('#done-form').append(`<input type="hidden" name="${id}" value="${content}">`);
                         }
                     });
                 }
+
+                return true;
             });
         });
  </script>
 </html>
+
+
+<!-- TODO: TypeError: currHotel.location is undefined -->

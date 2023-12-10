@@ -5,7 +5,9 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width">
     <title>Catalog</title>
-    <link href="serviceStyle.css" rel="stylesheet" type="text/css" />
+    <link href="style.css" rel="stylesheet" type="text/css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=PT-Serif">
     <style>
         input[type=text] {
         width: 25%;
@@ -15,27 +17,41 @@
         border-radius: 3px;
         }
 
+        #catalog {
+            padding: 40px;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .box h3{
+          color: #ffcda1;
+        }
+
         .icon-container {
         margin-bottom: 20px;
         padding: 7px 0;
         font-size: 24px;
         } 
 
-        .btn {
+        .box {
         background-color: rgb(36, 125, 155);
         color: white;
         padding: 12px;
-        margin: 10px 0;
         border: none;
         width: 100%;
         border-radius: 3px;
         cursor: pointer;
         font-size: 17px;
+        transition: transform 0.3s, background-color 0.3s;
         }
 
-        .btn:hover {
-        background-color: rgb(65, 153, 183);
-        }
+        .box:hover {
+        background-color: #4e92a6;
+        /* Change color on hover */
+        transform: scale(1.1);
+        /* Scale the button slightly on hover */
+        color: white;
+      }
 
         .box{
             display: block;
@@ -46,9 +62,11 @@
             color: rgb(255, 255, 255);
             float: left;
             width: 30%;
+            padding: 20px 20px;
             height: 500px;
             margin: 5px;
             font-size: 22px;
+            border-radius: 25px;
         }
 
         .payBox{
@@ -203,45 +221,67 @@
 </head>
 
 <body>
+<nav class="navbar">
+                <ul class="nav-links">
+                        <li><a href="services.html">Our Services</a></li>
+                        <li><a href="catalog.php">Plan Your Trip</a></li>
+                  <li><a href="index.html" class="logo"></a></li>
+                  
+                  <li><a href="story.html">Our Story</a> </li>
+                  <li><a href="contact.html">Contact Us</a></li>
+                </ul>
+                
+                  <div class="user-icon">
+                        <a href="login.php"><i class="fa fa-user" style="font-size:36px; color:white;"></i></a>
+                  </div>
 
+                   </nav>
 
-    <div id="catalog-backdrop"></div>
-    <div class="banner-text">
-        Catalog
-    </div>
+                   <header class="hero-section">
+    <!-- Image spanning the entire page -->
+    <img
+      src="images/plan-bg.jpg"
+      alt="Hero Image">
+    <div class="hero-text">Catalog</div>
+  </header>
+   <br>
 
     <div class="catalog-center" id="catalog">
         <div class="box" onclick="purchase('package1', 0)" id ="box1">
-            Basic Option
+            <h3>Basic Plan</h3>
             <br><br>
-            Our Basic Option makes planning logistics easy. You will get information about flights and hotels for
-            your desired destination for free!
-            <br><br>
-            Cost: FREE
+            With the basic plan you will get information about flights and hotels for
+            your desired destination! We will provide you with a plethora of flights and a variety
+            of hotels so you can choose whichever best suits your needs! Keeping it simple and sweet, our basic plan
+            knows how to make ends meet!
+            <br><br><br>
+            <h3>Cost: $50</h3>
         </div>
         <div class="box" onclick="purchase('package2', 80)" id="box2">
-            Gold Option
+            <h3>Gold Plan</h3>
             <br><br>
-            Our Gold Option adds events for you do at your destination. You will get information about flights, hotels, and some locations!
-            
-            <br><br>
-            Cost: $
+            Our Gold Option adds events for you do at your destination! You will get all of the 
+            information about flights and hotels that are included with our basic plan, with the addition
+            of locations and attractions that are a must see at your destination. You'll be able to choose
+            from the myriad of possibilities that we provide you!
+            <br><br><br>
+            <h3>Cost: $80</h3>
         </div>
         <div class="box" onclick="purchase('package3', 150)" id="box3">
-            Premium Option
+            <h3>Premium Plan</h3>
             <br><br>
-            Our Premium Option provides the most user customization. You will get information about flights, hotels, locations, and best of all food! 
-            We will have your perfect vacation planned prefectly and easy, from the flights and hotels to the restuarants and
-            attractions you will visit!
-            <br><br>
-            Cost: $
+            Our Premium Option provides peak user personalization and a guaranteed fun time! You will get information about flights, hotels, locations, and even 
+            all the best food! 
+            Finally, with additional access to special filters for things like dietary restrictions, we will have your perfect vacation right at your finger tips.
+            <br><br><br>
+            <h3>Cost: $120</h3>
         </div>
     </div>
     <div id="payBox" class="payBox" style="display:none">
         <div class="row">
             <div class="col-75">
               <div class="container">
-                <form action = "storing.php" onSubmit="return validate()" method="GET">
+                  <form action = "tripForm.php" onSubmit="return validate()" method="GET">
                     <h3>Billing Info</h3>
                     Order Summary: 
                     <p id="packageType">Package:</p>
@@ -286,6 +326,26 @@
             </div>
             </div>
           </div>
-    </div>
+          <br>
+    </div> 
+    <footer class="footer">
+      <div class="left">
+        <!-- Contact Information -->
+        <p>Contact Us</p>
+        <p>Email: contact@travelbuddy.com</p>
+        <p>Phone: +123456789</p>
+      </div>
+      <div class="social-icons">
+        <!-- Social Media Icons -->
+        <a href="https://www.instagram.com/" class="icon instagram"><i class="fa fa-instagram"></i></a>
+        <a href="https://www.facebook.com/" class="icon facebook"><i class="fa fa-facebook"></i></a>
+      </div>
+      <div class="right">
+        <!-- Copyright Statement -->
+        <p>&copy; 2023 </p>
+        <p>Travel Buddy</p>
+        <p>All rights reserved.</p>
+      </div>
+    </footer>
 </body>
 </html>
