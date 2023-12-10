@@ -5,6 +5,7 @@ require_once "config.php";
 // Define variables and initialize with empty values
 $username = $password = $confirm_password = "";
 $username_err = $password_err = $confirm_password_err = "";
+
  
 // Processing form data when form is submitted
 if($_SERVER["REQUEST_METHOD"] == "POST"){
@@ -100,38 +101,99 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
 <head>
     <meta charset="UTF-8">
     <title>Sign Up</title>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link href="style.css" rel="stylesheet" type="text/css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=PT-Serif">
     <style>
-        body{ font: 14px sans-serif; }
-        .wrapper{ width: 360px; padding: 20px; }
+        .wrapper{ 
+          width: 40%; 
+          padding: 20px; 
+          position: absolute;
+          top: 50%;
+          left: 50%;
+          transform: translate(-50%, -50%);
+          color: white;
+          text-align: center;
+          text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+          z-index: 1;
+        }
+
+        .btn{
+          display: inline-block;
+          align-content: center;
+          text-align: center;
+          background-color: #79adc0;
+          color: rgb(255, 255, 255);
+          font-size: 22px;
+          font-weight: 800;
+          padding: 10px;
+          border-radius: 20px;
+          /* Adding rounded corners */
+          border: none;
+          cursor: pointer;
+          transition: transform 0.3s, background-color 0.3s;
+          /* Adding transition for smooth hover effect */
+        }
+        /* Hover effect */
+        .btn:hover {
+          background-color: #4e92a6;
+          /* Change color on hover */
+          transform: scale(1.1);
+          /* Scale the button slightly on hover */
+          color: white;
+        }
     </style>
 </head>
 <body>
+<header class="hero-section">
+<?php
+//printing out basic html first
+    echo '<nav class="navbar">
+    <ul class="nav-links">
+            <li><a href="services.html">Our Services</a></li>
+            <li><a href="catalog.php">Plan Your Trip</a></li>
+        <li><a href="index.html" class="logo"></a></li>
+        
+        <li><a href="story.html">Our Story</a> </li>
+        <li><a href="contact.html">Contact Us</a></li>
+    </ul>
+    
+        <div class="user-icon">
+            <a href="login.php"><i class="fa fa-user" style="font-size:36px; color:white;"></i></a>
+        </div>
+
+        </nav>';
+?>
+    <!-- Image spanning the entire page -->
+    <img
+      src="images/login-bg.jpg"
+      alt="Hero Image">
     <div class="wrapper">
-        <h2>Sign Up</h2>
-        <p>Please fill this form to create an account.</p>
+        <h2 style="font-size:3em">Sign Up</h2>
+        <p style="font-size:18px;">Please fill this form to create an account.</p>
+        <br>
         <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
             <div class="form-group">
-                <label>Email</label>
-                <input type="text" id="email" name="username" class="form-control <?php echo (!empty($username_err)) ? 'is-invalid' : ''; ?>" value="<?php echo $username; ?>">
-                <span class="invalid-feedback"><?php echo $username_err; ?></span>
+                <label style="font-size:30px;">Email</label>
+                <input style="padding:5px;" type="text" id="email" name="username" class="form-control <?php echo (!empty($username_err)) ? 'is-invalid' : ''; ?>" value="<?php echo $username; ?>">
+                <span style="font-size:16px;" class="invalid-feedback"><?php echo $username_err; ?></span>
             </div>    
             <div class="form-group">
-                <label>Password</label>
-                <input type="password" name="password" class="form-control <?php echo (!empty($password_err)) ? 'is-invalid' : ''; ?>" value="<?php echo $password; ?>">
-                <span class="invalid-feedback"><?php echo $password_err; ?></span>
+                <label style="font-size:30px";>Password</label>
+                <input style="padding:5px;" type="password" name="password" class="form-control <?php echo (!empty($password_err)) ? 'is-invalid' : ''; ?>" value="<?php echo $password; ?>">
+                <span style="font-size:16px;" class="invalid-feedback"><?php echo $password_err; ?></span>
             </div>
             <div class="form-group">
-                <label>Confirm Password</label>
-                <input type="password" name="confirm_password" class="form-control <?php echo (!empty($confirm_password_err)) ? 'is-invalid' : ''; ?>" value="<?php echo $confirm_password; ?>">
-                <span class="invalid-feedback"><?php echo $confirm_password_err; ?></span>
+                <label style="font-size:30px";>Confirm Password</label>
+                <input style="padding:5px;"  type="password" name="confirm_password" class="form-control <?php echo (!empty($confirm_password_err)) ? 'is-invalid' : ''; ?>" value="<?php echo $confirm_password; ?>">
+                <span style="font-size:16px;" class="invalid-feedback"><?php echo $confirm_password_err; ?></span>
             </div>
             <div class="form-group">
-                <input type="submit" class="btn btn-primary" value="Submit">
-                <input type="reset" class="btn btn-secondary ml-2" value="Reset">
+                <br>
+                <input type="submit" class="btn" value="Submit">
             </div>
-            <p>Already have an account? <a href="login.php">Login here</a>.</p>
+            <p style="font-size:30px;">Already have an account? <a href="login.php">Login here</a>.</p>
         </form>
     </div>    
 </body>
-</html>
+</html>rgb(163, 86, 86)rgb(163, 85, 85)
