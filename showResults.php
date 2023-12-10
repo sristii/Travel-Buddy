@@ -8,12 +8,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST'){
 
     $data_map = array();
 
+    $skipKeys = array('fname', 'lname', 'email', 'card', 'package');
+
     foreach ($_POST as $key => $value) {
-        $data_map[$key] = $value;
+        if (!in_array($key, $skipKeys)) {
+            $data_map[$key] = $value;
+        }
     }
+
+    // get values to be stored in database
+    $data_arr = array_values($data_map);
+    $tripInfo = implode('', $data_arr);
 } else {
     // redirect if accessed directly without submitting the form
-    // header('Location: tripForm.html');
+    // header('Location: catalog.php');
     // exit();
 }
 
@@ -33,7 +41,7 @@ if ($conn->connect_error) {
 
 // Performing insert query execution
 $sql = "INSERT INTO users  VALUES ('$first_name', 
-        '$last_name','$email','$card', '$package', 'hello')";
+        '$last_name','$email','$card', '$package', '$tripInfo')";
         
 if (!mysqli_query($conn, $sql)){
     echo "ERROR: Sorry $sql. " . mysqli_error($conn);
