@@ -39,7 +39,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST'){
     $package = $_POST['package'];
 } else {
     // redirect if accessed directly without submitting the form
-    header('Location: tripForm.html');
+    header('Location: tripForm.php');
     exit();
 }
 ?>

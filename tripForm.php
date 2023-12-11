@@ -70,19 +70,20 @@
             height: 140px;
         }
         input[type="submit"] {
-                display: inline-block;
-        align-content: center;
-        text-align: center;
-        background-color: #79adc0;
-        color: rgb(255, 255, 255);
-        font-size: 22px;
-        font-weight: 800;
-        padding: 20px;
-        border-radius: 20px;
-        /* Adding rounded corners */
-        border: none;
-        cursor: pointer;
-        transition: transform 0.3s, background-color 0.3s;
+            display: inline-block;
+            align-content: center;
+            text-align: center;
+            background-color: #79adc0;
+            color: rgb(255, 255, 255);
+            font-size: 22px;
+            font-weight: 800;
+            padding: 20px;
+            border-radius: 20px;
+            margin-top: 20px;
+            /* Adding rounded corners */
+            border: none;
+            cursor: pointer;
+            transition: transform 0.3s, background-color 0.3s;
         }        
         input[type="submit"]:hover {
           background-color: #4e92a6;
@@ -106,8 +107,26 @@
         }
 
         #activity-questions {
-                text-align: center;
+            text-align: left;
+            max-width: 350px;
+            margin: 0px auto;
         }
+
+        #activity-questions p {
+            text-align: center;
+            margin-bottom: 10px;
+            margin-top: 5px;
+        }
+
+        @media screen and (max-width: 700px) {
+            input[type="text"], input[type="date"], input[type="submit"] {
+                max-width: 80%;
+            }
+            .page-title {
+                font-size: 30px;
+            }
+        }
+        
         </style>
 
 </head>
@@ -135,7 +154,7 @@
     </div>
   </div>    
                         <br>
-  <h1>Just a few more questions...</h1>
+  <h1 class='page-title'>Just a few more questions...</h1>
     <form id="general-form" onSubmit="return validate()" action="processTripForm.php" method="post">
         <div id="basic-questions">
             <label for="destination">Where are you going?</label>

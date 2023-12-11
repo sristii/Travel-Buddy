@@ -28,9 +28,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST'){
 //storing the required for data
 //read data from the form
 $servername = "localhost";
-$username = "us9rh6dk7loi9";
-$password = "5m2Dm^1xo^2D";
-$dbname = "dbwalyrbstfogx";
+$username = "uldx2rdrq1961";
+$password = "2*b4$4p^J77C";
+$dbname = "db22duqcno8ssd";
 
 // Create connection
 $conn = new mysqli($servername, $username, $password, $dbname);

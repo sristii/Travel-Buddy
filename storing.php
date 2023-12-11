@@ -156,10 +156,10 @@
         function validateUser(){
             var name = document.getElementById("uname").value;
             <?php
-                $servername = "localhost";
-                $username = "us9rh6dk7loi9";
-                $password = "5m2Dm^1xo^2D";
-                $dbname = "dbpaipqbnjfuel";
+    $servername = "localhost";
+    $username = "uldx2rdrq1961";
+    $password = "2*b4$4p^J77C";
+    $dbname = "db22duqcno8ssd";
 
                 $name = name;
                 

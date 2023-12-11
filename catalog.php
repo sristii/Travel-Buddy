@@ -28,9 +28,10 @@
         }
 
       .icon-container {
-        margin-bottom: 20px;
-        padding: 7px 0;
-        display: flex;
+            margin-bottom: 20px;
+            padding: 7px 0;
+            display: flex;
+            text-align: center;
         } 
 
         .icon-container label {
@@ -73,7 +74,7 @@
                 flex-direction: column; 
             }
             .box{
-                width: 80%; 
+                width: 90%; 
                 margin-bottom: 50px; 
             }
         }
@@ -133,19 +134,19 @@
             height: 140px;
         }
         input[type="submit"] {
-                display: inline-block;
-        align-content: center;
-        text-align: center;
-        background-color: #79adc0;
-        color: rgb(255, 255, 255);
-        font-size: 22px;
-        font-weight: 800;
-        padding: 20px;
-        border-radius: 20px;
-        /* Adding rounded corners */
-        border: none;
-        cursor: pointer;
-        transition: transform 0.3s, background-color 0.3s;
+            display: inline-block;
+            align-content: center;
+            text-align: center;
+            background-color: #79adc0;
+            color: rgb(255, 255, 255);
+            font-size: 22px;
+            font-weight: 800;
+            padding: 20px;
+            border-radius: 20px;
+            /* Adding rounded corners */
+            border: none;
+            cursor: pointer;
+            transition: transform 0.3s, background-color 0.3s;
         }        
         input[type="submit"]:hover {
                 background-color: #4e92a6;
@@ -192,9 +193,44 @@
           transform: scale(1.1);
           /* Scale the button slightly on hover */
           color: white;
-}
+        }
 
+        .icon-container input {
+            width: 30px;
+            display: inline-block;
+            font-size: 16px;
+            padding: 0px;
+            margin: 0px;
+        }
         
+        .icon-container label {
+            margin: 0px;
+            padding: 0px;
+            margin-right: 10px;
+        }
+
+        @media screen and (max-width: 700px) {
+            input[type="radio"] {
+                width: 20px;
+                display: inline-block;
+                font-size: 16px;
+                padding: 0px;
+                margin: 0px;
+            }
+            .icon-container label {
+                padding: 0px;
+                margin: 0px;
+                margin-right: 8px;
+            }
+            .button {
+                width: 80%;
+            }
+
+            .icon-container input {
+                padding: 0px;
+                margin: 0px;
+            }
+        }
 
     </style>
     <script>
@@ -417,14 +453,15 @@
                     <div class="col-50">
                       <label for="fname">Accepted Cards</label>
                       <div class="icon-container">
+                        &nbsp;&nbsp;&nbsp;
                         <input type="radio" id="visa" name="cardType" value="Visa">
-                            <label for="visa">Visa</label>
-                            <input type="radio" id="discover" name="cardType" value="discover">
-                            <label for="discover">Discover</label>
-                            <input type="radio" id="mastercard" name="cardType" value="mastercard">
-                            <label for="mastercard">MasterCard</label>
-                            <input type="radio" id="AE" name="cardType" value="AE">
-                            <label for="AE">AmEx</label>
+                        <label class="radio-label" for="visa">Visa</label>
+                        <input type="radio" id="discover" name="cardType" value="discover">
+                        <label class="radio-label" for="discover">Discover</label>
+                        <input type="radio" id="mastercard" name="cardType" value="mastercard">
+                        <label class="radio-label" for="mastercard">MasterCard</label>
+                        <input type="radio" id="AE" name="cardType" value="AE">
+                        <label class="radio-label" for="AE">AmEx</label>
                       </div>
                       <label for="cname">Name On Card</label>
                       <input type="text" id="cname" name="cardname" >
