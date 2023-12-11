@@ -94,7 +94,10 @@
     <style type="text/css">
         body {
             width: 100%;
-            background-color: #1C6B80;
+            background-color: white; 
+            text-align: center; 
+            justify-content: center; 
+            align-items: center; 
         }
         #cats-container h1 {
             margin-top: 50px;
@@ -108,7 +111,6 @@
             width: 100%;
         }
 
-
         #cats-container {
             display: block;
             width: 100%;
@@ -119,8 +121,7 @@
             width: 100%;
             padding: 10px 0px 30px 0px;
             margin: 0px;
-            margin-bottom: 80px;
-            background-color: #79ADC0;
+            margin-bottom: 50px;
         }
         .catResults input[type='button'] {
             padding: 10px; /* Adjust the padding as needed */
@@ -142,6 +143,9 @@
             overflow: scroll;
             overflow-x: hidden;
             height: 400px;
+            background-color: white;
+            justify-content: center; 
+            
         }
         /* hotels */
         #hotels {
@@ -180,12 +184,12 @@
             font-size: 18px;
             padding: 10px;
             padding-bottom: 0px;
-            border-radius: 5px;
+            border-radius: 20px;
             line-height: 1.5em;
-            margin: 6px;
+            margin: 15px;
             width: 300px;
             display: block;
-            background-color: white;
+            background-color: aliceblue;
             pointer-events: all;
         }
 
@@ -209,7 +213,7 @@
             font-weight: bold;
         }
         #cats-container b {
-            font-family: 'Courier New', Courier, monospace;
+            font-family: PT Serif;
         }
 
         /* tag icon with text for labeling results */
@@ -231,11 +235,10 @@
             font-size: 16px;
             text-align: center;
         } 
+
     </style>
 </head>
 <body>
-<p><a href="logout.php" class="btn btn-danger ml-3">Sign Out of Your Account</a>
-    </p>
     <div id="cats-container">
     </div>
     <script>
@@ -264,6 +267,8 @@
             $("#cats-container").html(tripsHTML); 
         });
     </script>
+    <a href="logout.php" class="signOut"><button>Sign Out</button></a>
+    <br><br>
      <footer class="footer">
       <div class="left">
         <!-- Contact Information -->

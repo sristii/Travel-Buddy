@@ -58,11 +58,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST'){
     <style type="text/css">
         body {
             width: 100%;
-            background-color: #1C6B80;
+            background-color: white;
+            text-align: center; 
         }
         .page-title {
             margin-top: 50px;
-            color: #FFA85C;
+            color: black;
             text-align: center;
         }
         .all-containers h2 {
@@ -83,7 +84,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST'){
             width: 100%;
             padding: 10px 0px 30px 0px;
             margin: 0px;
-            margin-bottom: 80px;
+            margin-bottom: 20px;
             display: none; /* not shown unless user chose the category in the form */
         }
         .catResults input[type='button'] {
@@ -103,24 +104,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST'){
             font-size: 20px;
             width: 100%;
             margin: 0 auto;
+            justify-content: center; 
             overflow: scroll;
             overflow-x: hidden;
             height: 400px;
-        }
-        #catering-container {
-            background-color: #79ADC0;
-        }
-        #commercial-container {
-            background-color: #79ADC0;
-        }
-        #natural-container {
-            background-color:#79ADC0;
-        }
-        #cultural-container {
-            background-color: #79ADC0;
-        }
-        #entertain-container {
-            background-color: #79ADC0;
         }
         /* hotels */
         #hotels {
@@ -130,12 +117,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST'){
             padding: 0px;
         }
         #hotel-container {
-            background-color: #79ADC0;
+            background-color: white;
             width: 100%;
             padding: 10px 0px 30px 0px;
             margin: 0px;
             display: block;
-            margin-bottom: 80px;
+            margin-bottom: 10px;
         }
         /* flights */
         #flights {
@@ -145,11 +132,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST'){
             padding: 0px;
         }
         #flight-container {
-            background-color: #79ADC0;
+            background-color: white;
             width: 100%;
             padding: 10px 0px 30px 0px;
             margin: 0px;
-            margin-bottom: 80px;
+            margin-bottom: 10px;
             display: block;
         }
 
@@ -164,12 +151,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST'){
             font-size: 18px;
             padding: 10px;
             padding-bottom: 0px;
-            border-radius: 5px;
+            border-radius: 20px;
             line-height: 1.5em;
-            margin: 6px;
+            margin: 10px;
             width: 300px;
             display: block;
-            background-color: white;
+            background-color: aliceblue;
             pointer-events: all;
         }
 
@@ -193,7 +180,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST'){
             font-weight: bold;
         }
         .all-containers b {
-            font-family: 'Courier New', Courier, monospace;
+            font-family: PT Serif;
         }
 
         /* tag icon with text for labeling results */
@@ -222,25 +209,80 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST'){
             padding: 2px 20px;
             cursor: pointer;
             color: black;
-            text-align: center;
+            margin: 12px; 
+            float: right; 
+            border-radius: 15px; 
         }
 
-        /* .heartBtn:hover {
-            background-color: pink;
+        .heartBtn:hover {
+            background-color: #4e92a6;
+            color: white;
+        }
+
+        #.done-f{
+            display: inline-block;
+            align-content: center;
+            text-align: center;
+            background-color: #79adc0;
+            color: rgb(255, 255, 255);
+            font-size: 22px;
+            font-weight: 800;
+            font-family: PT Serif;
+            padding: 5px;
+            border-radius: 20px;
+            /* Adding rounded corners */
+            border: none;
+            cursor: pointer;
+            transition: transform 0.3s, background-color 0.3s;
+            }   
+
+        .signOut:hover {
+            background-color: #4e92a6;
+            color: white;
         }
 
         .liked:hover {
             background-color: pink;
-        } */
-
-        #done-submit {
-            background-color: black; 
-            color: white;
-            padding: 10px 15px;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
+        } 
+        input[type="submit"] {
+                display: inline-block;
+        align-content: center;
+        text-align: center;
+        background-color: #79adc0;
+        color: rgb(255, 255, 255);
+        font-size: 22px;
+        font-weight: 800;
+        padding: 20px;
+        border-radius: 20px;
+        /* Adding rounded corners */
+        border: none;
+        cursor: pointer;
+        transition: transform 0.3s, background-color 0.3s;
+        }        
+        input[type="submit"]:hover {
+                background-color: #4e92a6;
+        /* Scale the button slightly on hover */
+        color: white;
         }
+        /* #done-submit{
+            display: inline-block;
+            align-content: center;
+            text-align: center;
+            background-color: #79adc0;
+            color: rgb(255, 255, 255);
+            font-size: 22px;
+            font-weight: 800;
+            padding: 5px;
+            border-radius: 20px;
+            border: none;
+            cursor: pointer;
+            transition: transform 0.3s, background-color 0.3s;
+            }   
+
+        #done-submit:hover {
+            background-color: #4e92a6;
+            color: white;
+        } */
     </style>
 </head>
 <body>
@@ -308,20 +350,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST'){
             <h2>NATURE</h2>
             <form id="natural-form" action="#" method="#">&nbsp; &nbsp;Filter results: </form>
             <div class="panes"></div>
-        </div>
-        
-        <!-- <form id="entertain-form" action="#" method="#">
-            <h4>More Fun</h4>
-        </form>
-        <div class='catResults' id='entertain-container'>
-            <h2>Other Entertainment</h2>
-            <div class="panes"></div>
-        </div> -->
+        </div>      
     </div>
-
+    <br>
     <form id="done-form" action="showResults.php" method="POST">
         <input type="submit" id="done-submit" value="I'm done!">
     </form>
+    <br><br>
 </body>
 <footer class="footer">
       <div class="left">
@@ -393,7 +428,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST'){
 
     async function hotelCity() {
          city = <?php echo json_encode($destinationCity); ?>;
-         console.log("city is: " + city);
          const options = {
          method: 'GET',
          url: 'https://priceline-com-provider.p.rapidapi.com/v1/hotels/locations',
@@ -402,7 +436,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST'){
              search_type: 'CITY'
          },
          headers: {
-             'X-RapidAPI-Key': '279c854fdbmsheb57c9c292c7a83p14f3e9jsn01a09f1170f4',
+             'X-RapidAPI-Key': '6514cc7badmshe7ee4122ff0b96dp18a0b8jsn6573eb2c79a2',
              'X-RapidAPI-Host': 'priceline-com-provider.p.rapidapi.com'
          }
          };
@@ -410,7 +444,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST'){
             const response = await axios.request(options);
             const cityID = response.data[0].cityID;
 
-            console.log("hotel city id: " + cityID); 
             displayHotel(cityID);
 
             return {
@@ -436,7 +469,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST'){
                  date_checkin: checkIn,
              },
              headers: {
-                'X-RapidAPI-Key': '279c854fdbmsheb57c9c292c7a83p14f3e9jsn01a09f1170f4',
+                'X-RapidAPI-Key': '6514cc7badmshe7ee4122ff0b96dp18a0b8jsn6573eb2c79a2',
                 'X-RapidAPI-Host': 'priceline-com-provider.p.rapidapi.com'
              }
         };
@@ -444,13 +477,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST'){
         try {
             $("#hotel-container .panes").html("Loading hotels...");
             const response = await axios.request(options);
-            // console.log(response); 
 
             const hotelsList = response.data.hotels;
             if (hotelsList == null){
                 $("#hotel-container .panes").html("No hotel availability in the area on those dates. Try adjusting the dates.");
             } else {
-                const numHotels = Math.min(hotelsList.length, 5);
+                const numHotels = Math.min(hotelsList.length, 4);
 
                 let allHotelsHtml = "";
                 for(let i = 0; i < numHotels; i++){
@@ -497,7 +529,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST'){
                 name: city, 
             },
             headers: {
-                'X-RapidAPI-Key': '279c854fdbmsheb57c9c292c7a83p14f3e9jsn01a09f1170f4',
+                'X-RapidAPI-Key': '6514cc7badmshe7ee4122ff0b96dp18a0b8jsn6573eb2c79a2',
                 'X-RapidAPI-Host': 'priceline-com-provider.p.rapidapi.com'
             },
         };  
@@ -533,14 +565,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST'){
                 duration_max: '3000'
             },
             headers: {
-                'X-RapidAPI-Key':'279c854fdbmsheb57c9c292c7a83p14f3e9jsn01a09f1170f4',
+                'X-RapidAPI-Key':'6514cc7badmshe7ee4122ff0b96dp18a0b8jsn6573eb2c79a2',
                 'X-RapidAPI-Host': 'priceline-com-provider.p.rapidapi.com'
             }
             };
             try {
                 $("#flight-container .panes").html("Loading flights...");
                 const response = await axios.request(options);
-                // console.log(response);
+                
                 if(response.data.listings == null){
                     $("#flight-container .panes").html("No flight availability on those dates. Try adjusting the dates or where you're flying from.");
                 }
@@ -561,7 +593,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST'){
                             timeZoneName: 'short'
                         });
 
-                        console.log(flightEntry);
 
                         let flightHtml = `<div class='place-info'><ul><li class='place-name'>Airline: ${flightEntry.airlines[0].name}</li><li>Seat type: ${flightEntry.allFareBrandNames}</li><li>Seats available: ${flightEntry.seatsAvailable}</li><li>Price: USD${currencyStr(flightEntry.totalPriceWithDecimal.price)}</li><li>Layovers: ${segments.length - 1}</li><li>Departure: ${segments[0].departInfo.airport.name} at ${formattedTime}</li>`;
 
@@ -648,9 +679,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST'){
             hotel: [],
             activity: []
         };
-
-        // console.log("city:" + cityName);
-        // console.log("wheelchair: " + wheelchair + ", wifi: " + wifi);
 
         // FUNCTION DEFINITIONS
         function getCatTags(containerId) {
@@ -753,11 +781,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST'){
             const catStr = categories.join("%2C");
             
             // a lot of nature entries don't have enough detail - no guarantee, but we can get some extra entries
-            // const maxResults = containerId == "natural-container" ? 30 : 4;
-            const maxResults = 10; // TODO make bigger
+            const maxResults = containerId == "#natural-container" ? 20 : 10; 
             const url = `https://api.geoapify.com/v2/places?categories=${catStr}${conditionStr}&filter=circle%3A${coordinates.lon}%2C${coordinates.lat}%2C${distMeters}&bias=proximity%3A${coordinates.lon}%2C${coordinates.lat}&limit=${maxResults}&apiKey=0b813d154863412cb86acd4b37d93c3b`;
-
-            console.log(url);
 
             fetch(url)
                 .then(res => res.text())
@@ -768,7 +793,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST'){
 
                     let dataHTML = "";
                     for (const place of locationsArr) {
-                        console.log(place);
+                        
                         const info = place.properties;
                         const placeCats = info.categories;
 
@@ -894,11 +919,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST'){
         }
 
         async function showActivities(coordinates) {
-            console.log("my coordinates: " + coordinates);
 
             // food
             if (allCategories.includes("catering")) {
-                console.log(dietRestrictions);
                 loadCategory("catering", cateringTypes, Object.values(cateringTags), dietRestrictions, coordinates);
             }
             
@@ -961,7 +984,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST'){
             $("#done-form").append(hiddenInfo);
 
             $('#done-form').submit(function(event) {
-                console.log(allData);
 
                 for (const category in allData) {
                     allData[category].forEach(function(obj) {
@@ -979,8 +1001,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST'){
                             }
                             
                             const currName = category + idNum;
-                            console.log(currName);
-                            console.log(content);
                         
                             $('#done-form').append(`<input type="hidden" name="${currName}" value="${content}">`);
                         }

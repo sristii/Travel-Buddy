@@ -28,9 +28,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST'){
 //storing the required for data
 //read data from the form
 $servername = "localhost";
-$username = "uldx2rdrq1961";
-$password = "2*b4$4p^J77C";
-$dbname = "db22duqcno8ssd";
+    $username = "uldx2rdrq1961";
+    $password = "2*b4$4p^J77C";
+    $dbname = "db22duqcno8ssd";
 
 // Create connection
 $conn = new mysqli($servername, $username, $password, $dbname);
@@ -65,11 +65,11 @@ $conn->close();
     <style type="text/css">
         body {
             width: 100%;
-            background-color: #1C6B80;
+            background-color: white;
         }
         .page-title {
             margin-top: 50px;
-            color: #FFA85C;
+            color: black;
             text-align: center;
         }
         .all-containers h2 {
@@ -90,7 +90,7 @@ $conn->close();
             width: 100%;
             padding: 10px 0px 30px 0px;
             margin: 0px;
-            margin-bottom: 80px;
+            margin-bottom: 25px;
         }
         .catResults input[type='button'] {
             padding: 10px; /* Adjust the padding as needed */
@@ -112,21 +112,7 @@ $conn->close();
             overflow: scroll;
             overflow-x: hidden;
             height: 400px;
-        }
-        #activity-container {
-            background-color: #79ADC0;
-        }
-        #commercial-container {
-            background-color: #79ADC0;
-        }
-        #natural-container {
-            background-color:#79ADC0;
-        }
-        #cultural-container {
-            background-color: #79ADC0;
-        }
-        #entertain-container {
-            background-color: #79ADC0;
+            justify-content: center; 
         }
         /* hotels */
         #hotels {
@@ -136,12 +122,12 @@ $conn->close();
             padding: 0px;
         }
         #hotel-container {
-            background-color: #79ADC0;
+            background-color: white;
             width: 100%;
             padding: 10px 0px 30px 0px;
             margin: 0px;
             display: block;
-            margin-bottom: 80px;
+            margin-bottom: 10px;
         }
         /* flights */
         #flights {
@@ -151,11 +137,11 @@ $conn->close();
             padding: 0px;
         }
         #flight-container {
-            background-color: #79ADC0;
+            background-color: white;
             width: 100%;
             padding: 10px 0px 30px 0px;
             margin: 0px;
-            margin-bottom: 80px;
+            margin-bottom: 10px;
             display: block;
         }
 
@@ -165,12 +151,12 @@ $conn->close();
             font-size: 18px;
             padding: 10px;
             padding-bottom: 0px;
-            border-radius: 5px;
+            border-radius: 20px;
             line-height: 1.5em;
-            margin: 6px;
+            margin: 10px;
             width: 300px;
             display: block;
-            background-color: white;
+            background-color: aliceblue;
             pointer-events: all;
         }
 

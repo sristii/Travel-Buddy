@@ -399,6 +399,7 @@ button {
   font-weight: 800;
   padding: 20px;
   border-radius: 20px;
+  font-family: PT Serif; 
   border: none;
   cursor: pointer;
   transition: transform 0.3s, background-color 0.3s;
