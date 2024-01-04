@@ -1,2 +1,2 @@
-# cs20final
-COLOR PALETTE: https://coolors.co/1c6b80-4e92a6-79adc0-ffa85c-ffffff
+# Travel Buddy
+Travel Buddy is a sophisticated travel planning platform designed to help users build their entire trip from the comfort of their own home. Based on the selected package, we can help them with everything from flights and hotels to notable tourist sites and restaurants. 
